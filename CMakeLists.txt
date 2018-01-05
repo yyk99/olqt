@@ -6,5 +6,5 @@ project (olqt)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_subdirectory(src/ol/layer)
+add_subdirectory(src/ol)
 add_subdirectory(examples)

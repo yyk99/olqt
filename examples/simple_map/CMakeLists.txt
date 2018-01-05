@@ -14,7 +14,11 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set (SRC_FILES simple_map.cpp simple_map.h MainWindow.h MainWindow.cpp)
 
+include_directories(${CMAKE_SOURCE_DIR}/src) # inlude <ol/....>
+
 add_executable(${TARGET} ${SRC_FILES} ${UI_HEADERS})
+
+target_link_libraries(${TARGET} olqt)
 
 qt5_use_modules(${TARGET} Widgets)
 
