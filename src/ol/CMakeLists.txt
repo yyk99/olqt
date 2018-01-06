@@ -25,6 +25,8 @@ add_library(olqt SHARED
     $<TARGET_OBJECTS:tilegrid_obj>
 )
 
+target_include_directories(olqt SYSTEM INTERFACE "${olqt_SOURCE_DIR}/src")
+
 set_target_properties(olqt PROPERTIES FOLDER "ol")
 
 # end of file
