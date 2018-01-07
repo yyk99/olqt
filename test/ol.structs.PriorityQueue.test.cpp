@@ -55,13 +55,37 @@ TEST(Foo, t1)
 TEST(PriorityQueue, t1)
 {
 	{
+		ol::structs::PriorityQueue<int, priority_funct, key_funct> pq;
+
+		EXPECT_TRUE(pq.enqueue(42));
+		EXPECT_TRUE(pq.enqueue(10));
+		EXPECT_TRUE(pq.enqueue(15));
+		EXPECT_FALSE(pq.enqueue(-9999));
+
+		EXPECT_EQ(3, pq.getCount());
+	}
+	{
 		 auto pq = ol::structs::PriorityQueue<int, priority_funct, key_funct>(priority_funct(), key_funct());
 
-		 pq.enqueue(42);
+		 EXPECT_TRUE(pq.enqueue(42));
+		 EXPECT_TRUE(pq.enqueue(10));
+		 EXPECT_TRUE(pq.enqueue(15));
+		 EXPECT_FALSE(pq.enqueue(-9999));
 
-		 EXPECT_EQ(1, pq.getCount());
+		 EXPECT_EQ(3, pq.getCount());
 	}
-	//{
-	//	ol::structs::PriorityQueue<int> pq(priority_funct(), key_funct());
-	//}
+	{
+		auto pq = ol::structs::PriorityQueue<int, priority_funct, key_funct>(priority_funct(), key_funct());
+
+		pq.enqueue(42);
+		pq.enqueue(10);
+		pq.enqueue(15);
+		pq.enqueue(-9999);
+
+		EXPECT_EQ(3, pq.getCount());
+		
+		EXPECT_EQ(10, pq.dequeue());
+		EXPECT_EQ(15, pq.dequeue());
+		EXPECT_EQ(42, pq.dequeue());
+	}
 }

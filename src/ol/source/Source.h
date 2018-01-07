@@ -36,36 +36,40 @@ namespace source {
 //var Source = function(options) {
 
 class OLQT_EXPORT Source : public ol::Object {
+public:
+	Source() {
+		//
+		//  _ol_Object_.call(this);
+		//
+		//  /**
+		//   * @private
+		//   * @type {ol.proj.Projection}
+		//   */
+		//  this.projection_ = getProjection(options.projection);
+		//
+		//  /**
+		//   * @private
+		//   * @type {?ol.Attribution}
+		//   */
+		//  this.attributions_ = this.adaptAttributions_(options.attributions);
+		//
+		//  /**
+		//   * @private
+		//   * @type {ol.source.State}
+		//   */
+		//  this.state_ = options.state !== undefined ?
+		//    options.state : SourceState.READY;
+		//
+		//  /**
+		//   * @private
+		//   * @type {boolean}
+		//   */
+		//  this.wrapX_ = options.wrapX !== undefined ? options.wrapX : false;
+		//
+		//};
+	}
 
-//
-//  _ol_Object_.call(this);
-//
-//  /**
-//   * @private
-//   * @type {ol.proj.Projection}
-//   */
-//  this.projection_ = getProjection(options.projection);
-//
-//  /**
-//   * @private
-//   * @type {?ol.Attribution}
-//   */
-//  this.attributions_ = this.adaptAttributions_(options.attributions);
-//
-//  /**
-//   * @private
-//   * @type {ol.source.State}
-//   */
-//  this.state_ = options.state !== undefined ?
-//    options.state : SourceState.READY;
-//
-//  /**
-//   * @private
-//   * @type {boolean}
-//   */
-//  this.wrapX_ = options.wrapX !== undefined ? options.wrapX : false;
-//
-//};
+	~Source();
 //
 //inherits(Source, _ol_Object_);
 //

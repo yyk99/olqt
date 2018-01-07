@@ -1,6 +1,8 @@
 //
 //
 //
+#pragma warning ( disable : 4251 )
+
 #ifndef _WIN32
     #define OLQT_EXPORT
 #else

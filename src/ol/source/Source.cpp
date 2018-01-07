@@ -5,3 +5,8 @@
  */
 
 #include "Source.h"
+
+ol::source::Source::~Source()
+{
+
+}

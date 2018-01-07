@@ -5,16 +5,18 @@
 #ifndef PRIORITYQUEUE_H
 #define PRIORITYQUEUE_H
 
+#include <ol/exports.h>
+
 #include <deque>
 #include <vector>
 #include <set>
 #include <string.h>
+#include <functional>
+#include <algorithm>
 
-#include <ol/exports.h>
 
 namespace ol {
 namespace structs {
-
 
 ///**
 // * @module ol/structs/PriorityQueue
@@ -39,16 +41,22 @@ namespace structs {
 // */
 //var PriorityQueue = function(priorityFunction, keyFunction) {
 
-template <typename T, typename FP, typename FK>
+template <typename T, typename FP = std::function<int(T const &)>, typename FK = std::function<std::string(T const &)> >
 class PriorityQueue : public std::deque<std::pair<int, T> > {
 private:
-	typedef std::deque<std::pair<int, T> > papa_t;
+	typedef std::pair<int, T> node_t;
+	typedef std::deque<node_t > papa_t;
 
 	FP priorityFunction_;
 	FK keyFunction_;
 
 	std::set <std::string> queuedElements_;
 public:
+	explicit PriorityQueue()
+		: priorityFunction_(), keyFunction_()
+	{
+	}
+
 	explicit PriorityQueue(FP const &priorityFunction, FK keyFunction)
 		: priorityFunction_(priorityFunction), keyFunction_(keyFunction)
 	{
@@ -130,12 +138,13 @@ public:
 	//  delete this.queuedElements_[elementKey];
 	//  return element;
 	//};
-	T const &dequeue()
+	T dequeue()
 	{
-		typename T el = papa_t::front();
-		papa_t::pop_front;
+		typename node_t el = papa_t::front();
+		papa_t::pop_front();
+		queuedElements_.erase(keyFunction_(el.second));
 
-		return el;
+		return el.second;
 	}
 	//
 	///**
@@ -158,10 +167,21 @@ public:
 	//};
 	//
 
+	static bool by_first(node_t const &l, node_t const &r)
+	{
+		return l.first < r.first;
+	}
+
 	bool enqueue(T const &element) {
 		int priority = this->priorityFunction_(element);
 		if (priority != DROP) {
+			std::string k = keyFunction_(element);
+
+			if (!queuedElements_.insert(k).second)
+				throw std::runtime_error("already in queue: " + k);
+
 			papa_t::push_back(std::make_pair(priority, element));
+			std::sort(begin(), end(), by_first);
 
 			return true;
 		}
@@ -245,6 +265,11 @@ public:
 	//PriorityQueue.prototype.isKeyQueued = function(key) {
 	//  return key in this.queuedElements_;
 	//};
+
+	bool isKeyQueued(std::string key) const {
+		return queuedElements_.count(key) != 0;
+	}
+
 	//
 	//
 	///**
@@ -254,6 +279,9 @@ public:
 	//PriorityQueue.prototype.isQueued = function(element) {
 	//  return this.isKeyQueued(this.keyFunction_(element));
 	//};
+	bool isKeyQueued(T const &element) const {
+		return queuedElements_.count(keyFunction_(element)) != 0;
+	}
 	//
 	//
 	///**
@@ -337,6 +365,10 @@ public:
 	//  priorities.length = index;
 	//  this.heapify_();
 	//};
+	void reprioritize()
+	{
+		// TODO: implement
+	}
 };
 //export default PriorityQueue;
 
