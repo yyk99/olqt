@@ -11,5 +11,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory(src/ol)
 add_subdirectory(examples)
 
+enable_testing()
+
 add_subdirectory(3rdparty)
 add_subdirectory(test)

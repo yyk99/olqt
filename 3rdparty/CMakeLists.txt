@@ -7,7 +7,7 @@ configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 
 message(STATUS "WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download")
 
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" . -DBUILD_GTEST=ON -DBUILD_GMOCK=OFF
   RESULT_VARIABLE result
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
 
@@ -25,6 +25,9 @@ endif()
 # Prevent overriding the parent project's compiler/linker
 # settings on Windows
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+# yyk
+set(BUILD_GTEST ON CACHE BOOL "" FORCE)
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
