@@ -25,11 +25,11 @@ struct key_funct {
 
 template <class T>
 class Foo : public std::vector<std::tuple<int, std::string, T> > {
-	std::function<bool(typename T const &)> priority_;
+	std::function<int(typename T const &)> priority_;
 	std::function<std::string(typename T const &)> key_;
 	
 public:
-	Foo(std::function<bool(T)> const &priority, std::function<std::string(T)>key)
+	Foo(std::function<int(T)> const &priority, std::function<std::string(T)>key)
 		: priority_(priority), key_(key)
 	{}
 
