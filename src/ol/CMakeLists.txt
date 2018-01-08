@@ -5,13 +5,13 @@
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set (STRUCTS_SRC
-	structs/PriorityQueue.cpp
-	structs/PriorityQueue.h
+    structs/PriorityQueue.cpp
+    structs/PriorityQueue.h
 )
 
 set (EVENTS_SRC
-	events/EventTarget.cpp
-	events/EventTarget.h
+    events/EventTarget.cpp
+    events/EventTarget.h
 )
 
 set (LAYER_SRC
@@ -39,31 +39,38 @@ set (SOURCE_SRC
 )
 
 set (TILEGRID_SRC
-	tilegrid/TileGrid.cpp
-	tilegrid/TileGrid.h
+    tilegrid/TileGrid.cpp
+    tilegrid/TileGrid.h
 )
 
 add_library(olqt SHARED
-    exports.h
-	Disposable.cpp
-	Disposable.h
-    Object.cpp
-    Object.h
-	TileQueue.cpp
-	TileQueue.h
+    Disposable.cpp
+    Disposable.h
+    ImageTile.cpp
+    ImageTile.h
     Map.cpp
     Map.h
+    Object.cpp
+    Object.h
     PluggableMap.cpp
     PluggableMap.h
+    Tile.cpp
+    Tile.h
+    TileQueue.cpp
+    TileQueue.h
     View.cpp
     View.h
-	Tile.cpp
-	Tile.h
+    exports.h
+    extent.cpp
+    extent.h
+    forward_definitions.h
+    optional.h
+    typedefs.h
 
-	${EVENTS_SRC}
+    ${EVENTS_SRC}
     ${LAYER_SRC}
     ${SOURCE_SRC}
-	${STRUCTS_SRC}
+    ${STRUCTS_SRC}
     ${TILEGRID_SRC}
 )
 

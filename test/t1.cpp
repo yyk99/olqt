@@ -26,3 +26,18 @@ TEST(ol_Tile, t1)
 {
 	ol::Tile *tile = new ol::Tile();
 }
+
+#include <ol/optional.h>
+
+TEST(ol_optional, t1)
+{
+    ol::optional<double> od;
+
+    EXPECT_FALSE(od.has_value());
+    EXPECT_THROW(od.value(), std::runtime_error);
+
+    od = 42.5;
+
+    EXPECT_TRUE(od.has_value());
+    EXPECT_EQ(42.5, od.value());
+}

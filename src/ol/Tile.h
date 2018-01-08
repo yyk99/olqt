@@ -5,16 +5,13 @@
 #ifndef OL_TILE_H
 #define OL_TILE_H
 
-#pragma warning ( disable : 4251 )
-
+#include <ol/typedefs.h>
 #include <ol/events/EventTarget.h>
 
 #include <tuple>
 #include <string>
 
 namespace ol {
-
-typedef std::tuple<int, int, int> TileCoord;
 
 inline std::string to_string(TileCoord const &c)
 {

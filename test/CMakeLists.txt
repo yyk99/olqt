@@ -12,4 +12,8 @@ endmacro(olqt_simple_test)
 olqt_simple_test(t1)
 olqt_simple_test(ol.object.test)
 olqt_simple_test(ol.structs.PriorityQueue.test)
+olqt_simple_test(ol.tilegrid.tilegrid.test)
+
+
+# end of file
 
