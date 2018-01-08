@@ -45,8 +45,8 @@ private:
 	TileState::enum_t m_state;
 	ol::TileCoord m_tileCoord;
 	int m_transition;
-
 	std::string m_key;
+
 public:
 	Tile();
 	/**

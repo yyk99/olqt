@@ -4,9 +4,8 @@
 
 #include <ol/Tile.h>
 
-ol::Tile::Tile() : m_tileCoord(), m_state(ol::TileState::IDLE), m_transition(250)
+ol::Tile::Tile() : m_tileCoord(),m_state(),m_transition(250)
 {
-
 }
 
 ol::Tile::Tile(ol::TileCoord coord, TileState::enum_t state, int transition)
