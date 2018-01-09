@@ -58,6 +58,8 @@ add_library(olqt SHARED
     Tile.h
     TileQueue.cpp
     TileQueue.h
+    TileRange.cpp
+    TileRange.h
     View.cpp
     View.h
     exports.h
@@ -65,6 +67,8 @@ add_library(olqt SHARED
     extent.h
     forward_definitions.h
     optional.h
+    size.cpp
+    size.h
     typedefs.h
 
     ${EVENTS_SRC}

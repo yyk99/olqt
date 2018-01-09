@@ -72,6 +72,7 @@ public:
     // * @type {ol.TileCoord}
     // */
     //ol.tilegrid.TileGrid.tmpTileCoord_ = [0, 0, 0];
+	static ol::TileCoord tmpTileCoord_;
     //
     //
     ///**
@@ -176,9 +177,7 @@ public:
     // * @return {number} Resolution.
     // * @api
     // */
-    //ol.tilegrid.TileGrid.prototype.getResolution = function(z) {
-    //  return this.resolutions_[z];
-    //};
+    int getResolution(int z) const;
     //
     //
     ///**
@@ -238,15 +237,7 @@ public:
     // * @param {ol.TileRange=} opt_tileRange Temporary tile range object.
     // * @return {ol.TileRange} Tile range.
     // */
-    //ol.tilegrid.TileGrid.prototype.getTileRangeForExtentAndZ = function(extent, z, opt_tileRange) {
-    //  var tileCoord = ol.tilegrid.TileGrid.tmpTileCoord_;
-    //  this.getTileCoordForXYAndZ_(extent[0], extent[1], z, false, tileCoord);
-    //  var minX = tileCoord[1];
-    //  var minY = tileCoord[2];
-    //  this.getTileCoordForXYAndZ_(extent[2], extent[3], z, true, tileCoord);
-    //  return ol.TileRange.createOrUpdate(
-    //      minX, tileCoord[1], minY, tileCoord[2], opt_tileRange);
-    //};
+	ol::TileRange getTileRangeForExtentAndZ(ol::Extent extent, int z/*, ol::optional<ol::TileRange> opt_tileRange = ol::optional<ol::TileRange>()*/);
     //
     //
     ///**
@@ -340,43 +331,22 @@ public:
     //};
     //
     //
-    ///**
-    // * Although there is repetition between this method and `getTileCoordForXYAndResolution_`,
-    // * they should have separate implementations.  This method is for integer zoom
-    // * levels.  The other method should only be called for resolutions corresponding
-    // * to non-integer zoom levels.
-    // * @param {number} x Map x coordinate.
-    // * @param {number} y Map y coordinate.
-    // * @param {number} z Integer zoom level.
-    // * @param {boolean} reverseIntersectionPolicy Instead of letting edge
-    // *     intersections go to the higher tile coordinate, let edge intersections
-    // *     go to the lower tile coordinate.
-    // * @param {ol.TileCoord=} opt_tileCoord Temporary ol.TileCoord object.
-    // * @return {ol.TileCoord} Tile coordinate.
-    // * @private
-    // */
-    //ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndZ_ = function(x, y, z, reverseIntersectionPolicy, opt_tileCoord) {
-    //  var origin = this.getOrigin(z);
-    //  var resolution = this.getResolution(z);
-    //  var tileSize = ol.size.toSize(this.getTileSize(z), this.tmpSize_);
-    //
-    //  var adjustX = reverseIntersectionPolicy ? 0.5 : 0;
-    //  var adjustY = reverseIntersectionPolicy ? 0 : 0.5;
-    //  var xFromOrigin = Math.floor((x - origin[0]) / resolution + adjustX);
-    //  var yFromOrigin = Math.floor((y - origin[1]) / resolution + adjustY);
-    //  var tileCoordX = xFromOrigin / tileSize[0];
-    //  var tileCoordY = yFromOrigin / tileSize[1];
-    //
-    //  if (reverseIntersectionPolicy) {
-    //    tileCoordX = Math.ceil(tileCoordX) - 1;
-    //    tileCoordY = Math.ceil(tileCoordY) - 1;
-    //  } else {
-    //    tileCoordX = Math.floor(tileCoordX);
-    //    tileCoordY = Math.floor(tileCoordY);
-    //  }
-    //
-    //  return ol.tilecoord.createOrUpdate(z, tileCoordX, tileCoordY, opt_tileCoord);
-    //};
+	///**
+	// * Although there is repetition between this method and `getTileCoordForXYAndResolution_`,
+	// * they should have separate implementations.  This method is for integer zoom
+	// * levels.  The other method should only be called for resolutions corresponding
+	// * to non-integer zoom levels.
+	// * @param {number} x Map x coordinate.
+	// * @param {number} y Map y coordinate.
+	// * @param {number} z Integer zoom level.
+	// * @param {boolean} reverseIntersectionPolicy Instead of letting edge
+	// *     intersections go to the higher tile coordinate, let edge intersections
+	// *     go to the lower tile coordinate.
+	// * @param {ol.TileCoord=} opt_tileCoord Temporary ol.TileCoord object.
+	// * @return {ol.TileCoord} Tile coordinate.
+	// * @private
+	// */
+	ol::TileCoord getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy, ol::optional<ol::TileCoord> opt_tileCoord = ol::optional<ol::TileCoord>());
     //
     //
     ///**

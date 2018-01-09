@@ -10,6 +10,7 @@
 #include <ol/optional.h>
 
 #include <vector>
+#include <tuple>
 
 namespace ol {
 const int DEFAULT_TILE_SIZE = 256;

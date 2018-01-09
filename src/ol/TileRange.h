@@ -73,17 +73,7 @@ public:
     // * @param {ol.TileRange|undefined} tileRange TileRange.
     // * @return {ol.TileRange} Tile range.
     // */
-    //TileRange.createOrUpdate = function(minX, maxX, minY, maxY, tileRange) {
-    //  if (tileRange !== undefined) {
-    //    tileRange.minX = minX;
-    //    tileRange.maxX = maxX;
-    //    tileRange.minY = minY;
-    //    tileRange.maxY = maxY;
-    //    return tileRange;
-    //  } else {
-    //    return new TileRange(minX, maxX, minY, maxY);
-    //  }
-    //};
+	static ol::TileRange createOrUpdate(int minX, int maxX, int minY, int maxY);
 //
 //
 ///**

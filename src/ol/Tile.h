@@ -8,7 +8,6 @@
 #include <ol/typedefs.h>
 #include <ol/events/EventTarget.h>
 
-#include <tuple>
 #include <string>
 
 namespace ol {
