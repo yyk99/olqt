@@ -566,14 +566,16 @@ TEST_F(TileGridF, createForProjection)
 {
 	//  describe('createForProjection', function() {
 	//
-	//    it('allows easier creation of a tile grid', function() {
+	//    it('allows easier creation of a tile grid', function() 
+    {
 	//      var projection = ol.proj.get('EPSG:3857');
 	//      var grid = ol.tilegrid.createForProjection(projection);
 	//      expect(grid).to.be.a(ol.tilegrid.TileGrid);
 	//
 	//      var resolutions = grid.getResolutions();
 	//      expect(resolutions.length).to.be(ol.DEFAULT_MAX_ZOOM + 1);
-	//    });
+	//    
+    }
 	//
 	//    it('accepts a number of zoom levels', function() {
 	//      var projection = ol.proj.get('EPSG:3857');

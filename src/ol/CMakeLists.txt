@@ -48,6 +48,19 @@ set (EXTENT_SRC
     extent/Corner.h
     )
 
+set (PROJ_SRC
+    proj/EPSG3857.cpp
+    proj/EPSG3857.h
+    proj/Projection.cpp
+    proj/Projection.h
+    proj/proj4.cpp
+    proj/proj4.h
+    proj/projections.cpp
+    proj/projections.h
+    proj/Units.cpp
+    proj/Units.h
+    )
+
 add_library(olqt SHARED
     Disposable.cpp
     Disposable.h
@@ -76,6 +89,8 @@ add_library(olqt SHARED
     math.cpp
     math.h
     optional.h
+    proj.cpp
+    proj.h
     size.cpp
     size.h
     tilegrid.cpp
@@ -85,6 +100,7 @@ add_library(olqt SHARED
     ${EVENTS_SRC}
     ${EXTENT_SRC}
     ${LAYER_SRC}
+    ${PROJ_SRC}
     ${SOURCE_SRC}
     ${STRUCTS_SRC}
     ${TILEGRID_SRC}
@@ -94,6 +110,7 @@ source_group("Source Files\\events" FILES ${EVENTS_SRC})
 source_group("Source Files\\extent" FILES ${EXTENT_SRC})
 source_group("Source Files\\structs" FILES ${STRUCTS_SRC})
 source_group("Source Files\\layer" FILES ${LAYER_SRC})
+source_group("Source Files\\proj" FILES ${PROJ_SRC})
 source_group("Source Files\\source" FILES ${SOURCE_SRC})
 source_group("Source Files\\tilegrid" FILES ${TILEGRID_SRC})
 
