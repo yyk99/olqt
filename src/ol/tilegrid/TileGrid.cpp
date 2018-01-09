@@ -3,6 +3,8 @@
 //
 
 #include "TileGrid.h"
+#include <ol/math.h>
+#include <ol/array.h>
 
 #include <algorithm>
 #include <functional>
@@ -208,8 +210,40 @@ ol::TileRange ol::tilegrid::TileGrid::getTileRangeForExtentAndZ(ol::Extent exten
     return ol::TileRange::createOrUpdate(minX, std::get<1>(tileCoord), minY, std::get<2>(tileCoord));
 }
 
+ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForCoordAndResolution(
+    ol::Coordinate const &coordinate, number_t resolution)
+{
+    return getTileCoordForXYAndResolution_(coordinate[0], coordinate[1], resolution, false);
+}
+
+ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForXYAndResolution_(number_t x, number_t y, number_t resolution, 
+    bool reverseIntersectionPolicy)
+{
+    int z = getZForResolution(resolution);
+    double scale = resolution / getResolution(z);
+    ol::Coordinate origin = getOrigin(z);
+    ol::Size tileSize = getTileSize(z);
+
+    number_t adjustX = reverseIntersectionPolicy ? 0.5 : 0;
+    number_t adjustY = reverseIntersectionPolicy ? 0 : 0.5;
+    number_t xFromOrigin = std::floor((x - origin[0]) / resolution + adjustX);
+    number_t yFromOrigin = std::floor((y - origin[1]) / resolution + adjustY);
+    number_t tileCoordX = scale * xFromOrigin / tileSize[0];
+    number_t tileCoordY = scale * yFromOrigin / tileSize[1];
+
+    if (reverseIntersectionPolicy) {
+        tileCoordX = std::ceil(tileCoordX) - 1;
+        tileCoordY = std::ceil(tileCoordY) - 1;
+    } else {
+        tileCoordX = std::floor(tileCoordX);
+        tileCoordY = std::floor(tileCoordY);
+    }
+
+    return ol::TileCoord(z, int(tileCoordX), int(tileCoordY));
+}
+
 //ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndZ_ = function(x, y, z, reverseIntersectionPolicy, opt_tileCoord) {
-ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy)
+ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForXYAndZ_(number_t x, number_t y, int z, bool reverseIntersectionPolicy)
 {
     auto origin = getOrigin(z);
     auto resolution = getResolution(z);
@@ -238,6 +272,11 @@ ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForCoordAndZ(ol::Coordinate co
     return getTileCoordForXYAndZ_(coordinate[0], coordinate[1], z, false);
 }
 
+ol::number_t ol::tilegrid::TileGrid::getTileCoordResolution(ol::TileCoord const &tileCoord)
+{
+    return resolutions_[std::get<0>(tileCoord)];
+}
+
 ol::Size const & ol::tilegrid::TileGrid::getTileSize(int z) const
 {
     if (tileSize_.has_value()) {
@@ -252,6 +291,12 @@ ol::optional<ol::TileRange> ol::tilegrid::TileGrid::getFullTileRange(int z)
         return ol::optional<ol::TileRange>();
     }
     return ol::optional<ol::TileRange>(fullTileRanges_[z]);
+}
+
+int ol::tilegrid::TileGrid::getZForResolution(number_t resolution, int opt_direction /*= 0*/)
+{
+    int z = ol::array::linearFindNearest(resolutions_, resolution, opt_direction);
+    return ol::math::clamp(z, minZoom, maxZoom);
 }
 
 //ol.tilegrid.TileGrid.prototype.calculateTileRanges_ = function(extent) {

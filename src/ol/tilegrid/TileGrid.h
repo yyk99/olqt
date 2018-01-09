@@ -254,64 +254,37 @@ public:
     //  var maxY = minY + tileSize[1] * resolution;
     //  return ol.extent.createOrUpdate(minX, minY, maxX, maxY, opt_extent);
     //};
-    //
-    //
-    ///**
-    // * Get the tile coordinate for the given map coordinate and resolution.  This
-    // * method considers that coordinates that intersect tile boundaries should be
-    // * assigned the higher tile coordinate.
-    // *
-    // * @param {ol.Coordinate} coordinate Coordinate.
-    // * @param {number} resolution Resolution.
-    // * @param {ol.TileCoord=} opt_tileCoord Destination ol.TileCoord object.
-    // * @return {ol.TileCoord} Tile coordinate.
-    // * @api
-    // */
-    //ol.tilegrid.TileGrid.prototype.getTileCoordForCoordAndResolution = function(coordinate, resolution, opt_tileCoord) {
-    //  return this.getTileCoordForXYAndResolution_(
-    //      coordinate[0], coordinate[1], resolution, false, opt_tileCoord);
-    //};
-    //
-    //
-    ///**
-    // * Note that this method should not be called for resolutions that correspond
-    // * to an integer zoom level.  Instead call the `getTileCoordForXYAndZ_` method.
-    // * @param {number} x X.
-    // * @param {number} y Y.
-    // * @param {number} resolution Resolution (for a non-integer zoom level).
-    // * @param {boolean} reverseIntersectionPolicy Instead of letting edge
-    // *     intersections go to the higher tile coordinate, let edge intersections
-    // *     go to the lower tile coordinate.
-    // * @param {ol.TileCoord=} opt_tileCoord Temporary ol.TileCoord object.
-    // * @return {ol.TileCoord} Tile coordinate.
-    // * @private
-    // */
-    //ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndResolution_ = function(
-    //    x, y, resolution, reverseIntersectionPolicy, opt_tileCoord) {
-    //  var z = this.getZForResolution(resolution);
-    //  var scale = resolution / this.getResolution(z);
-    //  var origin = this.getOrigin(z);
-    //  var tileSize = ol.size.toSize(this.getTileSize(z), this.tmpSize_);
-    //
-    //  var adjustX = reverseIntersectionPolicy ? 0.5 : 0;
-    //  var adjustY = reverseIntersectionPolicy ? 0 : 0.5;
-    //  var xFromOrigin = Math.floor((x - origin[0]) / resolution + adjustX);
-    //  var yFromOrigin = Math.floor((y - origin[1]) / resolution + adjustY);
-    //  var tileCoordX = scale * xFromOrigin / tileSize[0];
-    //  var tileCoordY = scale * yFromOrigin / tileSize[1];
-    //
-    //  if (reverseIntersectionPolicy) {
-    //    tileCoordX = Math.ceil(tileCoordX) - 1;
-    //    tileCoordY = Math.ceil(tileCoordY) - 1;
-    //  } else {
-    //    tileCoordX = Math.floor(tileCoordX);
-    //    tileCoordY = Math.floor(tileCoordY);
-    //  }
-    //
-    //  return ol.tilecoord.createOrUpdate(z, tileCoordX, tileCoordY, opt_tileCoord);
-    //};
-    //
-    //
+    
+    
+    /**
+     * Get the tile coordinate for the given map coordinate and resolution.  This
+     * method considers that coordinates that intersect tile boundaries should be
+     * assigned the higher tile coordinate.
+     *
+     * @param {ol.Coordinate} coordinate Coordinate.
+     * @param {number} resolution Resolution.
+     * @param {ol.TileCoord=} opt_tileCoord Destination ol.TileCoord object.
+     * @return {ol.TileCoord} Tile coordinate.
+     * @api
+     */
+    ol::TileCoord getTileCoordForCoordAndResolution(ol::Coordinate const &coordinate, number_t resolution);
+    
+    /**
+     * Note that this method should not be called for resolutions that correspond
+     * to an integer zoom level.  Instead call the `getTileCoordForXYAndZ_` method.
+     * @param {number} x X.
+     * @param {number} y Y.
+     * @param {number} resolution Resolution (for a non-integer zoom level).
+     * @param {boolean} reverseIntersectionPolicy Instead of letting edge
+     *     intersections go to the higher tile coordinate, let edge intersections
+     *     go to the lower tile coordinate.
+     * @param {ol.TileCoord=} opt_tileCoord Temporary ol.TileCoord object.
+     * @return {ol.TileCoord} Tile coordinate.
+     * @private
+     */
+    ol::TileCoord getTileCoordForXYAndResolution_(
+        number_t x, number_t y, number_t resolution, bool reverseIntersectionPolicy);
+    
 	///**
 	// * Although there is repetition between this method and `getTileCoordForXYAndResolution_`,
 	// * they should have separate implementations.  This method is for integer zoom
@@ -327,8 +300,7 @@ public:
 	// * @return {ol.TileCoord} Tile coordinate.
 	// * @private
 	// */
-	ol::TileCoord getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy);
-    
+	ol::TileCoord getTileCoordForXYAndZ_(number_t x, number_t y, int z, bool reverseIntersectionPolicy);
     
     /**
      * Get a tile coordinate given a map coordinate and zoom level.
@@ -339,17 +311,13 @@ public:
      * @api
      */
     ol::TileCoord getTileCoordForCoordAndZ (ol::Coordinate const &coordinate, int z);;
-    //
-    //
-    ///**
-    // * @param {ol.TileCoord} tileCoord Tile coordinate.
-    // * @return {number} Tile resolution.
-    // */
-    //ol.tilegrid.TileGrid.prototype.getTileCoordResolution = function(tileCoord) {
-    //  return this.resolutions_[tileCoord[0]];
-    //};
-    //
-    //
+    
+    /**
+     * @param {ol.TileCoord} tileCoord Tile coordinate.
+     * @return {number} Tile resolution.
+     */
+    number_t getTileCoordResolution(ol::TileCoord const &tileCoord);;
+    
     /**
      * Get the tile size for a zoom level. The type of the return value matches the
      * `tileSize` or `tileSizes` that the tile grid was configured with. To always
@@ -366,22 +334,17 @@ public:
     // * @return {ol.TileRange} Extent tile range for the specified zoom level.
     // */
     ol::optional<ol::TileRange> getFullTileRange(int z);
-    //
-    //
-    ///**
-    // * @param {number} resolution Resolution.
-    // * @param {number=} opt_direction If 0, the nearest resolution will be used.
-    // *     If 1, the nearest lower resolution will be used. If -1, the nearest
-    // *     higher resolution will be used. Default is 0.
-    // * @return {number} Z.
-    // * @api
-    // */
-    //ol.tilegrid.TileGrid.prototype.getZForResolution = function(
-    //    resolution, opt_direction) {
-    //  var z = ol.array.linearFindNearest(this.resolutions_, resolution,
-    //      opt_direction || 0);
-    //  return ol.math.clamp(z, this.minZoom, this.maxZoom);
-    //};
+    
+    
+    /**
+     * @param {number} resolution Resolution.
+     * @param {number=} opt_direction If 0, the nearest resolution will be used.
+     *     If 1, the nearest lower resolution will be used. If -1, the nearest
+     *     higher resolution will be used. Default is 0.
+     * @return {number} Z.
+     * @api
+     */
+    int getZForResolution (number_t resolution, int opt_direction = 0);;
     //
     //
     ///**

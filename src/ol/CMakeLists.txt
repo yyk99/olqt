@@ -67,10 +67,14 @@ add_library(olqt SHARED
     TileRange.h
     View.cpp
     View.h
+    array.cpp
+    array.h
     exports.h
     extent.cpp
     extent.h
     forward_definitions.h
+    math.cpp
+    math.h
     optional.h
     size.cpp
     size.h

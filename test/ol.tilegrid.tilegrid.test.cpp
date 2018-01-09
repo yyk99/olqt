@@ -969,6 +969,7 @@ TEST_F(TileGridF, getTileCoordFromCoordAndZ)
 
 TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 {
+    using namespace ol::tilegrid;
 	//  describe('getTileCoordForCoordAndResolution', function() {
 	//    it('returns the expected TileCoord', function() {
 	//      var tileSize = 256;
@@ -977,9 +978,17 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//        origin: origin,
 	//        tileSize: tileSize
 	//      });
-	//
+
+    ol::Size tileSize({ 256, 256 });
+    TileGrid::TileGridOptions options;
+    options.tileSize = tileSize;
+    options.origin = origin;
+    TileGrid tileGrid = TileGrid({ 10 }, options);
+
 	//      var coordinate;
+    ol::Coordinate coordinate;
 	//      var tileCoord;
+    ol::TileCoord tileCoord;
 	//
 	//      // gets the first tile at the origin
 	//      coordinate = [0, 0];
@@ -987,6 +996,11 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(0);
 	//      expect(tileCoord[2]).to.eql(0);
+    coordinate = { 0, 0 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(0, std::get<1>(tileCoord));
+    EXPECT_EQ(0, std::get<2>(tileCoord));
 	//
 	//      // gets one tile northwest of the origin
 	//      coordinate = [-1280, 1280];
@@ -994,6 +1008,11 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(-1);
 	//      expect(tileCoord[2]).to.eql(0);
+    coordinate = {-1280, 1280 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(-1, std::get<1>(tileCoord));
+    EXPECT_EQ(0, std::get<2>(tileCoord));
 	//
 	//      // gets one tile northeast of the origin
 	//      coordinate = [1280, 1280];
@@ -1001,6 +1020,11 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(0);
 	//      expect(tileCoord[2]).to.eql(0);
+    coordinate = { 1280, 1280 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(0, std::get<1>(tileCoord));
+    EXPECT_EQ(0, std::get<2>(tileCoord));
 	//
 	//      // gets one tile southeast of the origin
 	//      coordinate = [1280, -1280];
@@ -1008,6 +1032,11 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(0);
 	//      expect(tileCoord[2]).to.eql(-1);
+    coordinate = { 1280, -1280 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(0, std::get<1>(tileCoord));
+    EXPECT_EQ(-1, std::get<2>(tileCoord));
 	//
 	//      // gets one tile southwest of the origin
 	//      coordinate = [-1280, -1280];
@@ -1015,6 +1044,11 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(-1);
 	//      expect(tileCoord[2]).to.eql(-1);
+    coordinate = { -1280, -1280 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(-1, std::get<1>(tileCoord));
+    EXPECT_EQ(-1, std::get<2>(tileCoord));
 	//
 	//      // gets the tile to the east when on the edge
 	//      coordinate = [2560, -1280];
@@ -1022,6 +1056,11 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(1);
 	//      expect(tileCoord[2]).to.eql(-1);
+    coordinate = { 2560, -1280 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(1, std::get<1>(tileCoord));
+    EXPECT_EQ(-1, std::get<2>(tileCoord));
 	//
 	//      // gets the tile to the north when on the edge
 	//      coordinate = [1280, -2560];
@@ -1029,22 +1068,35 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(0);
 	//      expect(tileCoord[2]).to.eql(-1);
+    coordinate = { 1280, -2560 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(0, std::get<1>(tileCoord));
+    EXPECT_EQ(-1, std::get<2>(tileCoord));
+
+    // pixels are top aligned to the origin
+    //      coordinate = [1280, -2559.999];
+    //      tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    //      expect(tileCoord[0]).to.eql(0);
+    //      expect(tileCoord[1]).to.eql(0);
+    //      expect(tileCoord[2]).to.eql(-1);
+    coordinate = { 0, 0 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(0, std::get<1>(tileCoord));
+    EXPECT_EQ(0, std::get<2>(tileCoord));
 	//
-	//      // pixels are top aligned to the origin
-	//      coordinate = [1280, -2559.999];
-	//      tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
-	//      expect(tileCoord[0]).to.eql(0);
-	//      expect(tileCoord[1]).to.eql(0);
-	//      expect(tileCoord[2]).to.eql(-1);
-	//
-	//      // pixels are left aligned to the origin
+	// pixels are left aligned to the origin
 	//      coordinate = [2559.999, -1280];
 	//      tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
 	//      expect(tileCoord[0]).to.eql(0);
 	//      expect(tileCoord[1]).to.eql(0);
 	//      expect(tileCoord[2]).to.eql(-1);
-	//    });
-	//  });
+    coordinate = { 2559.999, -1280 };
+    tileCoord = tileGrid.getTileCoordForCoordAndResolution(coordinate, 10);
+    EXPECT_EQ(0, std::get<0>(tileCoord));
+    EXPECT_EQ(0, std::get<1>(tileCoord));
+    EXPECT_EQ(-1, std::get<2>(tileCoord));
 }
 
 TEST_F(TileGridF, getTileCoordForXYAndResolution_)
