@@ -38,7 +38,7 @@ public:
     {}
 
     TileRange(int minX, int maxX, int minY, int maxY)
-        : minX(minX), maxX(maxY), minY(minY), maxY(maxY)
+        : minX(minX), maxX(maxX), minY(minY), maxY(maxY)
     {
         //var TileRange = function(minX, maxX, minY, maxY) {
         //

@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <cmath>
 
 template <class ForwardIterator>
 bool is_desc_sorted(ForwardIterator first, ForwardIterator last)
@@ -140,27 +141,41 @@ ol::tilegrid::TileGrid::TileGrid(ol::resolutions_t resolutions, TileGridOptions 
       */
       //this.tmpSize_ = [0, 0];
 
-      if (options.sizes.size() != 0) {
-          throw std::runtime_error("Not implemented");
-          //this.fullTileRanges_ = options.sizes.map(function(size, z) {
-          //    var tileRange = new ol.TileRange(
-          //        Math.min(0, size[0]), Math.max(size[0] - 1, -1),
-          //        Math.min(0, size[1]), Math.max(size[1] - 1, -1));
-          //    return tileRange;
-          //}, this);
-      } else if (extent.has_value()) {
-          calculateTileRanges_(extent.value());
-      }
+    if (options.sizes.size() != 0) {
+        //this.fullTileRanges_ = options.sizes.map(function(size, z) {
+        //    var tileRange = new ol.TileRange(
+        //        Math.min(0, size[0]), Math.max(size[0] - 1, -1),
+        //        Math.min(0, size[1]), Math.max(size[1] - 1, -1));
+        //    return tileRange;
+        //}, this);
+        fullTileRanges_.resize(options.sizes.size());
+        for (int z = 0; z != options.sizes.size(); ++z) {
+            auto s = options.sizes[z];
+            auto tileRange = ol::TileRange(
+                std::min(0, s[0]), std::max(s[0] - 1, -1),
+                std::min(0, s[1]), std::max(s[1] - 1, -1));
+            fullTileRanges_[z] = tileRange;
+        }
+    } else if (extent.has_value()) {
+        calculateTileRanges_(extent.value());
+    }
 }
 
 ol::TileCoord ol::tilegrid::TileGrid::tmpTileCoord_; // = [0,0,0]
 
+//ol.tilegrid.TileGrid.prototype.getExtent = function()
 ol::optional<ol::Extent> ol::tilegrid::TileGrid::getExtent() const
 {
-    //ol.tilegrid.TileGrid.prototype.getExtent = function() {
-    //  return this.extent_;
-    //};
     return extent_;
+}
+
+//ol.tilegrid.TileGrid.prototype.getOrigin = function(z) {
+ol::Coordinate const & ol::tilegrid::TileGrid::getOrigin(int z /*= 0*/) const
+{
+    if (origin_.has_value()) {
+        return origin_.value();
+    }
+    return origins_[z];
 }
 
 int ol::tilegrid::TileGrid::getResolution(int z) const
@@ -171,39 +186,44 @@ int ol::tilegrid::TileGrid::getResolution(int z) const
 //ol.tilegrid.TileGrid.prototype.getTileRangeForExtentAndZ = function(extent, z, opt_tileRange) {
 ol::TileRange ol::tilegrid::TileGrid::getTileRangeForExtentAndZ(ol::Extent extent, int z)
 {
-	  auto tileCoord = ol::tilegrid::TileGrid::tmpTileCoord_;
-	  getTileCoordForXYAndZ_(extent[0], extent[1], z, false, tileCoord);
-	  int minX = std::get<1>(tileCoord); // [1];
-	  int minY = std::get<2>(tileCoord); // [2];
-	  getTileCoordForXYAndZ_(extent[2], extent[3], z, true, tileCoord);
-	  return ol::TileRange::createOrUpdate(minX, std::get<1>(tileCoord), minY, std::get<2>(tileCoord));
+    ol::TileCoord tileCoord = getTileCoordForXYAndZ_(extent[0], extent[1], z, false);
+    int minX = std::get<1>(tileCoord); // [1];
+    int minY = std::get<2>(tileCoord); // [2];
+    tileCoord = getTileCoordForXYAndZ_(extent[2], extent[3], z, true);
+    return ol::TileRange::createOrUpdate(minX, std::get<1>(tileCoord), minY, std::get<2>(tileCoord));
 }
 
-ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy, ol::optional<ol::TileCoord> opt_tileCoord /*= ol::optional<ol::TileCoord>()*/)
+//ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndZ_ = function(x, y, z, reverseIntersectionPolicy, opt_tileCoord) {
+ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy)
 {
-	throw std::runtime_error("Not implemented");
+    auto origin = getOrigin(z);
+    auto resolution = getResolution(z);
+    auto tileSize = getTileSize(z);
 
-	////ol.tilegrid.TileGrid.prototype.getTileCoordForXYAndZ_ = function(x, y, z, reverseIntersectionPolicy, opt_tileCoord) {
-	//  auto origin = getOrigin(z);
-	//  auto resolution = getResolution(z);
-	//  var tileSize = ol.size.toSize(this.getTileSize(z), this.tmpSize_);
-	//
-	//  var adjustX = reverseIntersectionPolicy ? 0.5 : 0;
-	//  var adjustY = reverseIntersectionPolicy ? 0 : 0.5;
-	//  var xFromOrigin = Math.floor((x - origin[0]) / resolution + adjustX);
-	//  var yFromOrigin = Math.floor((y - origin[1]) / resolution + adjustY);
-	//  var tileCoordX = xFromOrigin / tileSize[0];
-	//  var tileCoordY = yFromOrigin / tileSize[1];
-	//
-	//  if (reverseIntersectionPolicy) {
-	//    tileCoordX = Math.ceil(tileCoordX) - 1;
-	//    tileCoordY = Math.ceil(tileCoordY) - 1;
-	//  } else {
-	//    tileCoordX = Math.floor(tileCoordX);
-	//    tileCoordY = Math.floor(tileCoordY);
-	//  }
-	//
-	//  return ol.tilecoord.createOrUpdate(z, tileCoordX, tileCoordY, opt_tileCoord);
+    double adjustX = reverseIntersectionPolicy ? 0.5 : 0;
+    double adjustY = reverseIntersectionPolicy ? 0 : 0.5;
+    double xFromOrigin = std::floor((x - origin[0]) / resolution + adjustX);
+    double yFromOrigin = std::floor((y - origin[1]) / resolution + adjustY);
+    double tileCoordX = xFromOrigin / tileSize[0];
+    double tileCoordY = yFromOrigin / tileSize[1];
+
+    if (reverseIntersectionPolicy) {
+        tileCoordX = std::ceil(tileCoordX) - 1;
+        tileCoordY = std::ceil(tileCoordY) - 1;
+    } else {
+        tileCoordX = std::floor(tileCoordX);
+        tileCoordY = std::floor(tileCoordY);
+    }
+
+    return ol::TileCoord(z, int(tileCoordX), int(tileCoordY));
+}
+
+ol::Size const & ol::tilegrid::TileGrid::getTileSize(int z) const
+{
+    if (tileSize_.has_value()) {
+        return tileSize_.value();
+    }
+    return tileSizes_.value()[z];
 }
 
 ol::optional<ol::TileRange> ol::tilegrid::TileGrid::getFullTileRange(int z)
@@ -214,14 +234,13 @@ ol::optional<ol::TileRange> ol::tilegrid::TileGrid::getFullTileRange(int z)
     return ol::optional<ol::TileRange>(fullTileRanges_[z]);
 }
 
+//ol.tilegrid.TileGrid.prototype.calculateTileRanges_ = function(extent) {
 void ol::tilegrid::TileGrid::calculateTileRanges_(ol::Extent const &extent)
 {
-    throw std::runtime_error("Not implemented");
-    //ol.tilegrid.TileGrid.prototype.calculateTileRanges_ = function(extent) {
-      size_t length = resolutions_.size();
-      std::vector<ol::TileRange> fullTileRanges(length);
-	  for (int z = minZoom; z != length; ++z) {
-		  fullTileRanges[z] = getTileRangeForExtentAndZ(extent, z);
-	  }
-      fullTileRanges_ = fullTileRanges;
+    size_t length = resolutions_.size();
+    std::vector<ol::TileRange> fullTileRanges(length);
+    for (int z = minZoom; z != length; ++z) {
+        fullTileRanges[z] = getTileRangeForExtentAndZ(extent, z);
+    }
+    fullTileRanges_ = fullTileRanges;
 }

@@ -320,16 +320,17 @@ TEST_F(TileGridF, create_with_origin)
 
 TEST_F(TileGridF, create_with_extent)
 {
-//
-//  describe('create with extent', function() {
-//    var tileGrid;
-//    beforeEach(function() {
-//      tileGrid = new ol.tilegrid.TileGrid({
-//        extent: [10, 20, 30, 40],
-//        tileSize: 10,
-//        resolutions: [1]
-//      });
-//    });
+    /*
+      describe('create with extent', function() {
+        var tileGrid;
+        beforeEach(function() {
+          tileGrid = new ol.tilegrid.TileGrid({
+            extent: [10, 20, 30, 40],
+            tileSize: 10,
+            resolutions: [1]
+          });
+        });
+        */
     ol::tilegrid::TileGrid::TileGridOptions options;
     options.extent = ol::Extent({ 10, 20, 30, 40 });
     options.tileSize = ol::Size({ 10, 10 });
@@ -361,30 +362,42 @@ TEST_F(TileGridF, create_with_extent)
 
 TEST_F(TileGridF, create_with_extent_and_sizes)
 {
-	//
-	//  describe('create with extent and sizes', function() {
-	//    var tileGrid;
-	//    beforeEach(function() {
-	//      tileGrid = new ol.tilegrid.TileGrid({
-	//        extent: [10, 20, 30, 40],
-	//        sizes: [[3, -3]],
-	//        tileSize: 10,
-	//        resolutions: [1]
-	//      });
-	//    });
-	//
-	//    it('returns the configured extent', function() {
-	//      expect(tileGrid.getExtent()).to.eql([10, 20, 30, 40]);
-	//    });
-	//
-	//    it('calculates full tile ranges from sizes', function() {
-	//      var fullTileRange = tileGrid.getFullTileRange(0);
-	//      expect(fullTileRange.minX).to.equal(0);
-	//      expect(fullTileRange.maxX).to.equal(2);
-	//      expect(fullTileRange.minY).to.equal(-3);
-	//      expect(fullTileRange.maxY).to.equal(-1);
-	//    });
-	//  });
+    /*describe('create with extent and sizes', function() {
+      var tileGrid;
+      beforeEach(function() {
+        tileGrid = new ol.tilegrid.TileGrid({
+          extent: [10, 20, 30, 40],
+          sizes: [[3, -3]],
+          tileSize: 10,
+          resolutions: [1]
+        });
+      });*/
+
+    ol::tilegrid::TileGrid::TileGridOptions options;
+    options.extent = ol::Extent({ 10, 20, 30, 40 });
+    options.sizes.assign({ {3, -3} });
+    options.tileSize = ol::Size({ 10, 10 });
+
+    ol::tilegrid::TileGrid tileGrid(ol::resolutions_t({ 1 }), options);
+    //
+    //    it('returns the configured extent', function() {
+    //      expect(tileGrid.getExtent()).to.eql([10, 20, 30, 40]);
+    //    });
+    EXPECT_EQ(ol::Extent({ 10, 20, 30, 40 }), tileGrid.getExtent().value());
+    //
+    //    it('calculates full tile ranges from sizes', function() {
+    //      var fullTileRange = tileGrid.getFullTileRange(0);
+    //      expect(fullTileRange.minX).to.equal(0);
+    //      expect(fullTileRange.maxX).to.equal(2);
+    //      expect(fullTileRange.minY).to.equal(-3);
+    //      expect(fullTileRange.maxY).to.equal(-1);
+    //    });
+    ol::TileRange fullTileRange = tileGrid.getFullTileRange(0).value();
+    EXPECT_EQ(0, fullTileRange.minX);
+    EXPECT_EQ(2, fullTileRange.maxX);
+    EXPECT_EQ(-3, fullTileRange.minY);
+    EXPECT_EQ(-1, fullTileRange.maxY);
+    //  });
 }
 
 TEST_F(TileGridF, create_with_top_left_origin_and_sizes)
@@ -400,34 +413,58 @@ TEST_F(TileGridF, create_with_top_left_origin_and_sizes)
 	//        resolutions: [1]
 	//      });
 	//    });
+
+    ol::tilegrid::TileGrid::TileGridOptions options;
+    options.origin = ol::Coordinate({ 10, 40 });
+    options.sizes.assign({ {3, -3} });
+    options.tileSize = ol::Size({ 10, 10 });
+
+    ol::tilegrid::TileGrid tileGrid(ol::resolutions_t({ 1 }), options);
+
 	//
 	//    it('calculates correct minY and maxY for negative heights', function() {
 	//      var fullTileRange = tileGrid.getFullTileRange(0);
 	//      expect(fullTileRange.minY).to.equal(-3);
 	//      expect(fullTileRange.maxY).to.equal(-1);
 	//    });
+    ol::TileRange fullTileRange = tileGrid.getFullTileRange(0).value();
+    EXPECT_EQ(-3, fullTileRange.minY);
+    EXPECT_EQ(-1, fullTileRange.maxY);
+
 	//  });
 }
 
 TEST_F(TileGridF, create_with_bottom_left_origin_and_sizes)
 {
-	//  describe('create with bottom-left origin and sizes', function() {
-	//    var tileGrid;
-	//    beforeEach(function() {
-	//      tileGrid = new ol.tilegrid.TileGrid({
-	//        origin: [10, 10],
-	//        sizes: [[3, 3]],
-	//        tileSize: 10,
-	//        resolutions: [1]
-	//      });
-	//    });
+	/*  describe('create with bottom-left origin and sizes', function() {
+	    var tileGrid;
+	    beforeEach(function() {
+	      tileGrid = new ol.tilegrid.TileGrid({
+	        origin: [10, 10],
+	        sizes: [[3, 3]],
+	        tileSize: 10,
+	        resolutions: [1]
+	      });
+	    });*/
+
+    ol::tilegrid::TileGrid::TileGridOptions options;
+    options.origin = ol::Coordinate({ 10, 10 });
+    options.sizes.assign({ {3, 3} });
+    options.tileSize = ol::Size({ 10, 10 });
+
+    ol::tilegrid::TileGrid tileGrid(ol::resolutions_t({ 1 }), options);
+
 	//
 	//    it('calculates correct minX and maxX for positive heights', function() {
 	//      var fullTileRange = tileGrid.getFullTileRange(0);
 	//      expect(fullTileRange.minY).to.equal(0);
 	//      expect(fullTileRange.maxY).to.equal(2);
 	//    });
-	//  });
+    ol::TileRange fullTileRange = tileGrid.getFullTileRange(0).value();
+    EXPECT_EQ(0, fullTileRange.minY);
+    EXPECT_EQ(2, fullTileRange.maxY);
+
+    //  });
 }
 
 TEST_F(TileGridF, create_with_extent_and_origin)

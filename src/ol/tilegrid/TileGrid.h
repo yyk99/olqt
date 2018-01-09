@@ -39,7 +39,7 @@ private:
     ol::optional<ol::Coordinate> origin_;
     std::vector<ol::Coordinate> origins_;
     ol::optional<ol::Size> tileSize_;
-    ol::optional<std::vector<ol::Size> > tileSizes_;
+    ol::optional<std::vector<ol::Size> > tileSizes_; // TODO: use only tileSizes_.
 
     std::vector<ol::TileRange> fullTileRanges_;
     ol::Size tmpSize_;
@@ -65,16 +65,16 @@ public:
     // * @api
     // */
     TileGrid(ol::resolutions_t resolutions, TileGridOptions const &options);
-    //
-    //
+    
+    
     ///**
     // * @private
     // * @type {ol.TileCoord}
     // */
     //ol.tilegrid.TileGrid.tmpTileCoord_ = [0, 0, 0];
 	static ol::TileCoord tmpTileCoord_;
-    //
-    //
+    
+    
     ///**
     // * Call a function with each tile coordinate for a given extent and zoom level.
     // *
@@ -91,8 +91,8 @@ public:
     //    }
     //  }
     //};
-    //
-    //
+    
+    
     ///**
     // * @param {ol.TileCoord} tileCoord Tile coordinate.
     // * @param {function(this: T, number, ol.TileRange): boolean} callback Callback.
@@ -127,8 +127,8 @@ public:
     //  }
     //  return false;
     //};
-    //
-    //
+    
+    
     ///**
     // * Get the extent for this tile grid, if it was configured.
     // * @return {ol.Extent} Extent.
@@ -144,8 +144,8 @@ public:
     //ol.tilegrid.TileGrid.prototype.getMaxZoom = function() {
     //  return this.maxZoom;
     //};
-    //
-    //
+    
+    
     ///**
     // * Get the minimum zoom level for the grid.
     // * @return {number} Min zoom.
@@ -154,21 +154,15 @@ public:
     //ol.tilegrid.TileGrid.prototype.getMinZoom = function() {
     //  return this.minZoom;
     //};
-    //
-    //
-    ///**
-    // * Get the origin for the grid at the given zoom level.
-    // * @param {number} z Integer zoom level.
-    // * @return {ol.Coordinate} Origin.
-    // * @api
-    // */
-    ol::Coordinate const &getOrigin(int z = 0) const {
-        //ol.tilegrid.TileGrid.prototype.getOrigin = function(z) {
-          if (origin_.has_value()) {
-              return origin_.value();
-          } 
-          return origins_[z];
-    }
+    
+    
+    /**
+     * Get the origin for the grid at the given zoom level.
+     * @param {number} z Integer zoom level.
+     * @return {ol.Coordinate} Origin.
+     * @api
+     */
+    ol::Coordinate const &getOrigin(int z = 0) const;
     //
     //
     ///**
@@ -346,7 +340,7 @@ public:
 	// * @return {ol.TileCoord} Tile coordinate.
 	// * @private
 	// */
-	ol::TileCoord getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy, ol::optional<ol::TileCoord> opt_tileCoord = ol::optional<ol::TileCoord>());
+	ol::TileCoord getTileCoordForXYAndZ_(int x, int y, int z, bool reverseIntersectionPolicy);
     //
     //
     ///**
@@ -372,21 +366,15 @@ public:
     //};
     //
     //
-    ///**
-    // * Get the tile size for a zoom level. The type of the return value matches the
-    // * `tileSize` or `tileSizes` that the tile grid was configured with. To always
-    // * get an `ol.Size`, run the result through `ol.size.toSize()`.
-    // * @param {number} z Z.
-    // * @return {number|ol.Size} Tile size.
-    // * @api
-    // */
-    //ol.tilegrid.TileGrid.prototype.getTileSize = function(z) {
-    //  if (this.tileSize_) {
-    //    return this.tileSize_;
-    //  } else {
-    //    return this.tileSizes_[z];
-    //  }
-    //};
+    /**
+     * Get the tile size for a zoom level. The type of the return value matches the
+     * `tileSize` or `tileSizes` that the tile grid was configured with. To always
+     * get an `ol.Size`, run the result through `ol.size.toSize()`.
+     * @param {number} z Z.
+     * @return {number|ol.Size} Tile size.
+     * @api
+     */
+    ol::Size const &getTileSize(int z) const;
     //
     //
     ///**

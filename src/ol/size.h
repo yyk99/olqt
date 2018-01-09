@@ -6,8 +6,10 @@
 #define OL_SIZE_H
 
 #include <ol/exports.h>
+#include <ol/typedefs.h>
 
 namespace ol {
+namespace size {
 ///**
 // * @module ol/size
 // */
@@ -67,7 +69,7 @@ namespace ol {
 // * @return {ol.Size} Size.
 // * @api
 // */
-//_ol_size_.toSize = function(size, opt_size) {
+//ol::Size toSize = function(size, opt_size) {
 //  if (Array.isArray(size)) {
 //    return size;
 //  } else {
@@ -78,8 +80,8 @@ namespace ol {
 //    }
 //    return opt_size;
 //  }
-//};
-//export default _ol_size_;
+//}
+}
 }
 
 #endif
