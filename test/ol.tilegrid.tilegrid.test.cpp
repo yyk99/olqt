@@ -11,6 +11,8 @@
 
 #include "gtest/gtest.h"
 
+using namespace ol::tilegrid;
+
 //
 //
 //goog.require('ol');
@@ -64,7 +66,7 @@ TEST_F(TileGridF, create_valid)
     //    });
     //  });
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = this->origin;
     options.tileSize = this->tileSize;
 
@@ -85,7 +87,7 @@ TEST_F(TileGridF, create_with_duplicate_resolutions)
 //    });
 //  });
 //
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = this->origin;
     options.tileSize = this->tileSize;
 
@@ -106,7 +108,7 @@ TEST_F(TileGridF, create_with_out_of_order_resolutions)
 //      }).to.throwException();
 //    });
 //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = this->origin;
     options.tileSize = this->tileSize;
 
@@ -126,7 +128,7 @@ TEST_F(TileGridF, create_with_multiple_origins)
 //      }).not.to.throwException();
 //    });
 //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSize = this->tileSize;
     options.origins = std::vector<ol::Coordinate>({ origin, origin, origin, origin });
 
@@ -148,7 +150,7 @@ TEST_F(TileGridF, create_with_both_origin_and_multiple_origins)
 //      }).to.throwException();
 //    });
 //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSize = this->tileSize;
     options.origin = this->origin;
     options.origins = std::vector<ol::Coordinate>({ origin, origin, origin, origin });
@@ -170,7 +172,7 @@ TEST_F(TileGridF, create_with_too_few_origins)
 //      }).to.throwException();
 //    });
 //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSize = this->tileSize;
     options.origins = std::vector<ol::Coordinate>({ origin, origin, origin });
 
@@ -190,7 +192,7 @@ TEST_F(TileGridF, create_with_too_many_origins)
 //      }).to.throwException();
 //    });
 //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSize = this->tileSize;
     options.origins = std::vector<ol::Coordinate>({ origin, origin, origin, origin, origin });
 
@@ -211,7 +213,7 @@ TEST_F(TileGridF, create_with_multiple_tileSizes)
     //      }).not.to.throwException();
     //    });
     //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSizes = std::vector<ol::Size>({ tileSize, tileSize, tileSize, tileSize });
     options.origin = origin;
 
@@ -232,7 +234,7 @@ TEST_F(TileGridF, create_with_both_tileSize_and_multiple_tileSizes)
     //      }).to.throwException();
     //    });
     //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSize = this->tileSize;
     options.tileSizes = std::vector<ol::Size>({ tileSize, tileSize, tileSize, tileSize });
     options.origin = origin;
@@ -255,7 +257,7 @@ TEST_F(TileGridF, create_with_too_few_tileSizes)
 //    });
 //  });
 //
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSizes = std::vector<ol::Size>({ tileSize, tileSize, tileSize });
     options.origin = origin;
 
@@ -275,7 +277,7 @@ TEST_F(TileGridF, create_with_too_many_tileSizes)
     //      }).to.throwException();
     //    });
     //  });
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.tileSizes = std::vector<ol::Size>({ tileSize, tileSize, tileSize, tileSize, tileSize });
     options.origin = origin;
 
@@ -294,7 +296,7 @@ TEST_F(TileGridF, create_with_origin)
     //      });
     //    });
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = ol::Coordinate({ 10, 20 });
     options.tileSize = ol::Size({ 10, 10 });
 
@@ -332,7 +334,7 @@ TEST_F(TileGridF, create_with_extent)
           });
         });
         */
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.extent = ol::Extent({ 10, 20, 30, 40 });
     options.tileSize = ol::Size({ 10, 10 });
 
@@ -374,7 +376,7 @@ TEST_F(TileGridF, create_with_extent_and_sizes)
         });
       });*/
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.extent = ol::Extent({ 10, 20, 30, 40 });
     options.sizes.assign({ {3, -3} });
     options.tileSize = ol::Size({ 10, 10 });
@@ -415,7 +417,7 @@ TEST_F(TileGridF, create_with_top_left_origin_and_sizes)
 	//      });
 	//    });
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = ol::Coordinate({ 10, 40 });
     options.sizes.assign({ {3, -3} });
     options.tileSize = ol::Size({ 10, 10 });
@@ -448,7 +450,7 @@ TEST_F(TileGridF, create_with_bottom_left_origin_and_sizes)
 	      });
 	    });*/
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = ol::Coordinate({ 10, 10 });
     options.sizes.assign({ {3, 3} });
     options.tileSize = ol::Size({ 10, 10 });
@@ -479,7 +481,7 @@ TEST_F(TileGridF, create_with_extent_and_origin)
 	//        resolutions: [1]
 	//      });
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.origin = ol::Coordinate({ 0, 0 });
     options.extent = ol::Extent({ 10, 20, 30, 40 });
     //options.sizes.assign({ {3, 3} });
@@ -527,7 +529,7 @@ TEST_F(TileGridF, zoomFactor_)
         //        origin: origin,
         //        tileSize: tileSize
         //      });
-        ol::tilegrid::TileGrid::TileGridOptions options;
+        ol::tilegrid::TileGrid::Options options;
         options.origin = origin;
         //options.extent = ol::Extent({ 10, 20, 30, 40 });
         //options.sizes.assign({ {3, 3} });
@@ -548,7 +550,7 @@ TEST_F(TileGridF, zoomFactor_)
 	//    });
 	//  });
 
-        ol::tilegrid::TileGrid::TileGridOptions options;
+        ol::tilegrid::TileGrid::Options options;
         options.origin = origin;
         //options.extent = ol::Extent({ 10, 20, 30, 40 });
         //options.sizes.assign({ {3, 3} });
@@ -867,7 +869,7 @@ TEST_F(TileGridF, getTileCoordFromCoordAndZ)
         //          tileSize: tileSize
         //        });
         ol::Coordinate origin({ 0, 0 });
-        ol::tilegrid::TileGrid::TileGridOptions options;
+        ol::tilegrid::TileGrid::Options options;
         options.origin = origin;
         options.tileSize = tileSize;
         auto tileGrid = ol::tilegrid::TileGrid(resolutions, options);
@@ -923,7 +925,7 @@ TEST_F(TileGridF, getTileCoordFromCoordAndZ)
 
     {
 	    ol::Coordinate origin({ 0, 100000 });
-	    ol::tilegrid::TileGrid::TileGridOptions options;
+	    ol::tilegrid::TileGrid::Options options;
 	    options.origin = origin;
 	    options.tileSize = tileSize;
 	    auto tileGrid = ol::tilegrid::TileGrid(resolutions, options);
@@ -980,7 +982,7 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 	//      });
 
     ol::Size tileSize({ 256, 256 });
-    TileGrid::TileGridOptions options;
+    TileGrid::Options options;
     options.tileSize = tileSize;
     options.origin = origin;
     TileGrid tileGrid = TileGrid({ 10 }, options);
@@ -1102,57 +1104,71 @@ TEST_F(TileGridF, getTileCoordForCoordAndResolution)
 TEST_F(TileGridF, getTileCoordForXYAndResolution_)
 {
 	//  describe('getTileCoordForXYAndResolution_', function() {
-	//    it('returns higher tile coord for intersections by default', function() {
-	//      var tileGrid = new ol.tilegrid.TileGrid({
-	//        resolutions: resolutions,
-	//        origin: origin,
-	//        tileSize: tileSize
-	//      });
-	//
-	//      var tileCoord;
-	//
-	//      // gets higher tile for edge intersection
-	//      tileCoord = tileGrid.getTileCoordForXYAndResolution_(
-	//          0, 0, 100, false);
-	//      expect(tileCoord[0]).to.eql(3);
-	//      expect(tileCoord[1]).to.eql(0);
-	//      expect(tileCoord[2]).to.eql(0);
-	//
-	//      // gets higher tile for edge intersection
-	//      tileCoord = tileGrid.getTileCoordForXYAndResolution_(
-	//          100000, 100000, 100, false);
-	//      expect(tileCoord[0]).to.eql(3);
-	//      expect(tileCoord[1]).to.eql(10);
-	//      expect(tileCoord[2]).to.eql(10);
-	//
-	//    });
-	//
-	//    it('handles alt intersection policy', function() {
-	//      var tileGrid = new ol.tilegrid.TileGrid({
-	//        resolutions: resolutions,
-	//        origin: origin,
-	//        tileSize: tileSize
-	//      });
-	//
-	//      var tileCoord;
-	//
-	//      // can get lower tile for edge intersection
-	//      tileCoord = tileGrid.getTileCoordForXYAndResolution_(
-	//          0, 0, 100, true);
-	//      expect(tileCoord[0]).to.eql(3);
-	//      expect(tileCoord[1]).to.eql(-1);
-	//      expect(tileCoord[2]).to.eql(-1);
-	//
-	//      // gets higher tile for edge intersection
-	//      tileCoord = tileGrid.getTileCoordForXYAndResolution_(
-	//          100000, 100000, 100, true);
-	//      expect(tileCoord[0]).to.eql(3);
-	//      expect(tileCoord[1]).to.eql(9);
-	//      expect(tileCoord[2]).to.eql(9);
-	//
-	//    });
-	//
-	//  });
+	{
+		//    it('returns higher tile coord for intersections by default', function() {
+		//      var tileGrid = new ol.tilegrid.TileGrid({
+		//        resolutions: resolutions,
+		//        origin: origin,
+		//        tileSize: tileSize
+		//      });
+	    TileGrid::Options options;
+	    options.origin = origin;
+	    options.tileSize = tileSize;
+	    TileGrid tileGrid(resolutions, options);
+		//
+		//      var tileCoord;
+	    ol::TileCoord tileCoord;
+		//
+		// gets higher tile for edge intersection
+		tileCoord = tileGrid.getTileCoordForXYAndResolution_(0, 0, 100, false);
+		//      expect(tileCoord[0]).to.eql(3);
+		//      expect(tileCoord[1]).to.eql(0);
+		//      expect(tileCoord[2]).to.eql(0);
+	    EXPECT_EQ(3, std::get<0>(tileCoord));
+	    EXPECT_EQ(0, std::get<1>(tileCoord));
+	    EXPECT_EQ(0, std::get<2>(tileCoord));
+		//
+		// gets higher tile for edge intersection
+		tileCoord = tileGrid.getTileCoordForXYAndResolution_(100000, 100000, 100, false);
+		//      expect(tileCoord[0]).to.eql(3);
+		//      expect(tileCoord[1]).to.eql(10);
+		//      expect(tileCoord[2]).to.eql(10);
+	    EXPECT_EQ(3, std::get<0>(tileCoord));
+	    EXPECT_EQ(10, std::get<1>(tileCoord));
+	    EXPECT_EQ(10, std::get<2>(tileCoord));
+	}
+	{
+		//    it('handles alt intersection policy', function() {
+		//      var tileGrid = new ol.tilegrid.TileGrid({
+		//        resolutions: resolutions,
+		//        origin: origin,
+		//        tileSize: tileSize
+		//      });
+        TileGrid::Options options;
+        options.origin = origin;
+        options.tileSize = tileSize;
+        TileGrid tileGrid(resolutions, options);
+		//
+		ol::TileCoord tileCoord;
+		//
+		// can get lower tile for edge intersection
+		tileCoord = tileGrid.getTileCoordForXYAndResolution_(0, 0, 100, true);
+		//      expect(tileCoord[0]).to.eql(3);
+		//      expect(tileCoord[1]).to.eql(-1);
+		//      expect(tileCoord[2]).to.eql(-1);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(-1, std::get<1>(tileCoord));
+        EXPECT_EQ(-1, std::get<2>(tileCoord));
+		//
+		// gets higher tile for edge intersection
+        tileCoord = tileGrid.getTileCoordForXYAndResolution_(100000, 100000, 100, true);
+		//      expect(tileCoord[0]).to.eql(3);
+		//      expect(tileCoord[1]).to.eql(9);
+		//      expect(tileCoord[2]).to.eql(9);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(9, std::get<1>(tileCoord));
+        EXPECT_EQ(9, std::get<2>(tileCoord));
+	}
 }
 
 TEST_F(TileGridF, getTileCoordCenter)
@@ -1164,21 +1180,32 @@ TEST_F(TileGridF, getTileCoordCenter)
 	//        origin: origin,
 	//        tileSize: tileSize
 	//      });
+
+    TileGrid::Options options;
+    options.origin = origin;
+    options.tileSize = tileSize;
+    TileGrid tileGrid(resolutions, options);
+
 	//      var center;
+    ol::Coordinate center;
 	//
-	//      center = tileGrid.getTileCoordCenter([0, 0, 0]);
+    center = tileGrid.getTileCoordCenter(ol::TileCoord(0, 0, 0));
 	//      expect(center[0]).to.eql(50000);
 	//      expect(center[1]).to.eql(50000);
+    EXPECT_EQ(50000, center[0]);
+    EXPECT_EQ(50000, center[1]);
 	//
-	//      center = tileGrid.getTileCoordCenter([3, 0, 0]);
+	center = tileGrid.getTileCoordCenter(ol::TileCoord(3, 0, 0));
 	//      expect(center[0]).to.eql(5000);
 	//      expect(center[1]).to.eql(5000);
+    EXPECT_EQ(5000, center[0]);
+    EXPECT_EQ(5000, center[1]);
 	//
-	//      center = tileGrid.getTileCoordCenter([3, 9, 9]);
+	center = tileGrid.getTileCoordCenter(ol::TileCoord(3, 9, 9));
 	//      expect(center[0]).to.eql(95000);
 	//      expect(center[1]).to.eql(95000);
-	//    });
-	//  });
+    EXPECT_EQ(95000, center[0]);
+    EXPECT_EQ(95000, center[1]);
 }
 
 TEST_F(TileGridF, getTileCoordExtent)
@@ -1366,6 +1393,7 @@ TEST_F(TileGridF, forEachTileCoordParentTileRange2)
 
 TEST_F(TileGridF, getZForResolution_exact)
 {
+    using namespace ol::tilegrid;
 	//  describe('getZForResolution (exact)', function() {
 	//    it('returns the expected z value', function() {
 	//      var tileGrid = new ol.tilegrid.TileGrid({
@@ -1373,17 +1401,24 @@ TEST_F(TileGridF, getZForResolution_exact)
 	//        origin: origin,
 	//        tileSize: tileSize
 	//      });
+    TileGrid::Options options;
+    options.tileSize = tileSize;
+    options.origin = origin;
+    TileGrid tileGrid = TileGrid(resolutions, options);
 	//
 	//      expect(tileGrid.getZForResolution(1000)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(500)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(250)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(100)).to.eql(3);
-	//    });
-	//  });
+    EXPECT_EQ(0, tileGrid.getZForResolution(1000));
+    EXPECT_EQ(1, tileGrid.getZForResolution(500));
+    EXPECT_EQ(2, tileGrid.getZForResolution(250));
+    EXPECT_EQ(3, tileGrid.getZForResolution(100));
 }
 
 TEST_F(TileGridF, getZForResolution_approximate)
 {
+    using namespace ol::tilegrid;
 	//  describe('getZForResolution (approximate)', function() {
 	//    it('returns the expected z value', function() {
 	//      var tileGrid = new ol.tilegrid.TileGrid({
@@ -1392,25 +1427,48 @@ TEST_F(TileGridF, getZForResolution_approximate)
 	//        tileSize: tileSize
 	//      });
 	//
+    TileGrid::Options options;
+    options.tileSize = tileSize;
+    options.origin = origin;
+
+    TileGrid tileGrid = TileGrid(resolutions, options);
 	//      expect(tileGrid.getZForResolution(2000)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(1000)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(900)).to.eql(0);
+
 	//      expect(tileGrid.getZForResolution(750)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(625)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(500)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(475)).to.eql(1);
+
 	//      expect(tileGrid.getZForResolution(375)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(250)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(200)).to.eql(2);
+
 	//      expect(tileGrid.getZForResolution(125)).to.eql(3);
 	//      expect(tileGrid.getZForResolution(100)).to.eql(3);
 	//      expect(tileGrid.getZForResolution(50)).to.eql(3);
-	//    });
-	//  });
+    EXPECT_EQ(0, tileGrid.getZForResolution(2000));
+    EXPECT_EQ(0, tileGrid.getZForResolution(1000));
+    EXPECT_EQ(0, tileGrid.getZForResolution(900));
+
+    EXPECT_EQ(1, tileGrid.getZForResolution(750));
+    EXPECT_EQ(1, tileGrid.getZForResolution(625));
+    EXPECT_EQ(1, tileGrid.getZForResolution(500));
+    EXPECT_EQ(1, tileGrid.getZForResolution(475));
+
+    EXPECT_EQ(2, tileGrid.getZForResolution(375));
+    EXPECT_EQ(2, tileGrid.getZForResolution(250));
+    EXPECT_EQ(2, tileGrid.getZForResolution(200));
+
+    EXPECT_EQ(3, tileGrid.getZForResolution(125));
+    EXPECT_EQ(3, tileGrid.getZForResolution(100));
+    EXPECT_EQ(3, tileGrid.getZForResolution(50));
 }
 
 TEST_F(TileGridF, getZForResolution_lower)
 {
+    using namespace ol::tilegrid;
 	//  describe('getZForResolution (lower)', function() {
 	//    it('returns the expected z value', function() {
 	//      var tileGrid = new ol.tilegrid.TileGrid({
@@ -1418,26 +1476,50 @@ TEST_F(TileGridF, getZForResolution_lower)
 	//        origin: origin,
 	//        tileSize: tileSize
 	//      });
+    TileGrid::Options options;
+    options.tileSize = tileSize;
+    options.origin = origin;
+
+    TileGrid tileGrid = TileGrid(resolutions, options);
 	//
 	//      expect(tileGrid.getZForResolution(2000, 1)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(1000, 1)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(900, 1)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(750, 1)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(625, 1)).to.eql(0);
+
 	//      expect(tileGrid.getZForResolution(500, 1)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(475, 1)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(375, 1)).to.eql(1);
+
 	//      expect(tileGrid.getZForResolution(250, 1)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(200, 1)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(125, 1)).to.eql(2);
+
 	//      expect(tileGrid.getZForResolution(100, 1)).to.eql(3);
 	//      expect(tileGrid.getZForResolution(50, 1)).to.eql(3);
-	//    });
-	//  });
+    EXPECT_EQ(0, tileGrid.getZForResolution(2000, 1));
+    EXPECT_EQ(0, tileGrid.getZForResolution(1000, 1));
+    EXPECT_EQ(0, tileGrid.getZForResolution(900, 1));
+    EXPECT_EQ(0, tileGrid.getZForResolution(750, 1));
+    EXPECT_EQ(0, tileGrid.getZForResolution(625, 1));
+
+    EXPECT_EQ(1, tileGrid.getZForResolution(500, 1));
+    EXPECT_EQ(1, tileGrid.getZForResolution(475, 1));
+    EXPECT_EQ(1, tileGrid.getZForResolution(375, 1));
+
+    EXPECT_EQ(2, tileGrid.getZForResolution(250, 1));
+    EXPECT_EQ(2, tileGrid.getZForResolution(200, 1));
+    EXPECT_EQ(2, tileGrid.getZForResolution(125, 1));
+
+    EXPECT_EQ(3, tileGrid.getZForResolution(100, 1));
+    EXPECT_EQ(3, tileGrid.getZForResolution(50, 1));
 }
 
 TEST_F(TileGridF, getZForResolution_higher)
 {
+    using namespace ol::tilegrid;
+
 	//  describe('getZForResolution (higher)', function() {
 	//    it('returns the expected z value', function() {
 	//      var tileGrid = new ol.tilegrid.TileGrid({
@@ -1445,21 +1527,45 @@ TEST_F(TileGridF, getZForResolution_higher)
 	//        origin: origin,
 	//        tileSize: tileSize
 	//      });
+
+    TileGrid::Options options;
+    options.tileSize = tileSize;
+    options.origin = origin;
+
+    TileGrid tileGrid = TileGrid(resolutions, options);
 	//
 	//      expect(tileGrid.getZForResolution(2000, -1)).to.eql(0);
 	//      expect(tileGrid.getZForResolution(1000, -1)).to.eql(0);
+
 	//      expect(tileGrid.getZForResolution(900, -1)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(750, -1)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(625, -1)).to.eql(1);
 	//      expect(tileGrid.getZForResolution(500, -1)).to.eql(1);
+
 	//      expect(tileGrid.getZForResolution(475, -1)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(375, -1)).to.eql(2);
 	//      expect(tileGrid.getZForResolution(250, -1)).to.eql(2);
+
 	//      expect(tileGrid.getZForResolution(200, -1)).to.eql(3);
 	//      expect(tileGrid.getZForResolution(125, -1)).to.eql(3);
 	//      expect(tileGrid.getZForResolution(100, -1)).to.eql(3);
 	//      expect(tileGrid.getZForResolution(50, -1)).to.eql(3);
-	//    });
-	//  });
+    EXPECT_EQ(0, tileGrid.getZForResolution(2000, -1));
+    EXPECT_EQ(0, tileGrid.getZForResolution(1000, -1));
+
+    EXPECT_EQ(1, tileGrid.getZForResolution(900, -1));
+    EXPECT_EQ(1, tileGrid.getZForResolution(750, -1));
+    EXPECT_EQ(1, tileGrid.getZForResolution(625, -1));
+    EXPECT_EQ(1, tileGrid.getZForResolution(500, -1));
+
+    EXPECT_EQ(2, tileGrid.getZForResolution(475, -1));
+    EXPECT_EQ(2, tileGrid.getZForResolution(375, -1));
+    EXPECT_EQ(2, tileGrid.getZForResolution(250, -1));
+
+    EXPECT_EQ(3, tileGrid.getZForResolution(200, -1));
+    EXPECT_EQ(3, tileGrid.getZForResolution(125, -1));
+    EXPECT_EQ(3, tileGrid.getZForResolution(100, -1));
+    EXPECT_EQ(3, tileGrid.getZForResolution(50, -1));
 }
-//});
+
+// end of file

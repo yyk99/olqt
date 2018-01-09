@@ -24,7 +24,7 @@ ol::tilegrid::TileGrid OLQT_EXPORT ol::tilegrid::createForExtent(ol::Extent cons
     //  tileSize : opt_tileSize
     //});
 
-    ol::tilegrid::TileGrid::TileGridOptions options;
+    ol::tilegrid::TileGrid::Options options;
     options.extent = extent;
     options.origin = ol::extent::getCorner(extent, opt_corner);
 

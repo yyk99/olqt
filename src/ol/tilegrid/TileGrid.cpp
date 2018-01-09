@@ -24,7 +24,7 @@ bool is_desc_sorted(ForwardIterator first, ForwardIterator last)
     return true;
 }
 
-ol::tilegrid::TileGrid::TileGrid(ol::resolutions_t resolutions, TileGridOptions const &options) :
+ol::tilegrid::TileGrid::TileGrid(ol::resolutions_t resolutions, Options const &options) :
     resolutions_(resolutions)
 {
     //ol.tilegrid.TileGrid = function(options) {
@@ -190,7 +190,7 @@ ol::Coordinate const & ol::tilegrid::TileGrid::getOrigin(int z /*= 0*/) const
     return origins_[z];
 }
 
-double ol::tilegrid::TileGrid::getResolution(int z) const
+ol::number_t ol::tilegrid::TileGrid::getResolution(int z) const
 {
 	return resolutions_[z];
 }
@@ -208,6 +208,17 @@ ol::TileRange ol::tilegrid::TileGrid::getTileRangeForExtentAndZ(ol::Extent exten
     number_t minY = std::get<2>(tileCoord); // [2];
     tileCoord = getTileCoordForXYAndZ_(extent[2], extent[3], z, true);
     return ol::TileRange::createOrUpdate(minX, std::get<1>(tileCoord), minY, std::get<2>(tileCoord));
+}
+
+ol::Coordinate ol::tilegrid::TileGrid::getTileCoordCenter(ol::TileCoord const &tileCoord) const
+{
+    int x, y, z; std::tie(z, x, y) = tileCoord;
+
+    auto origin = getOrigin(z);
+    number_t resolution = getResolution(z);
+    ol::Size tileSize = getTileSize(z);
+    return ol::Coordinate({ origin[0] + (x + 0.5) * tileSize[0] * resolution,
+        origin[1] + (y + 0.5) * tileSize[1] * resolution });
 }
 
 ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForCoordAndResolution(

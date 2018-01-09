@@ -44,7 +44,7 @@ private:
     std::vector<ol::TileRange> fullTileRanges_;
     ol::Size tmpSize_;
 public:
-    struct TileGridOptions {
+    struct Options {
         ol::optional<ol::Extent> extent;
         ol::optional<int> minZoom;
         ol::optional<ol::Coordinate> origin;
@@ -64,7 +64,7 @@ public:
      * @struct
      * @api
      */
-    TileGrid(ol::resolutions_t resolutions, TileGridOptions const &options);
+    TileGrid(ol::resolutions_t resolutions, Options const &options);
     
     
     /**
@@ -160,7 +160,7 @@ public:
      * @return {number} Resolution.
      * @api
      */
-    double getResolution(int z) const;
+    ol::number_t getResolution(int z) const;
   
     /**
      * Get the list of resolutions for the tile grid.
@@ -219,23 +219,14 @@ public:
     // * @return {ol.TileRange} Tile range.
     // */
 	ol::TileRange getTileRangeForExtentAndZ(ol::Extent extent, int z/*, ol::optional<ol::TileRange> opt_tileRange = ol::optional<ol::TileRange>()*/);
-    //
-    //
-    ///**
-    // * @param {ol.TileCoord} tileCoord Tile coordinate.
-    // * @return {ol.Coordinate} Tile center.
-    // */
-    //ol.tilegrid.TileGrid.prototype.getTileCoordCenter = function(tileCoord) {
-    //  var origin = this.getOrigin(tileCoord[0]);
-    //  var resolution = this.getResolution(tileCoord[0]);
-    //  var tileSize = ol.size.toSize(this.getTileSize(tileCoord[0]), this.tmpSize_);
-    //  return [
-    //    origin[0] + (tileCoord[1] + 0.5) * tileSize[0] * resolution,
-    //    origin[1] + (tileCoord[2] + 0.5) * tileSize[1] * resolution
-    //  ];
-    //};
-    //
-    //
+    
+    
+    /**
+     * @param {ol.TileCoord} tileCoord Tile coordinate.
+     * @return {ol.Coordinate} Tile center.
+     */
+    ol::Coordinate getTileCoordCenter(ol::TileCoord const &tileCoord) const;;
+    
     ///**
     // * Get the extent of a tile coordinate.
     // *
