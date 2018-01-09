@@ -7,6 +7,7 @@
 //#include "ol.tilegrid.tilegrid.test.h"
 
 #include <ol/tilegrid/TileGrid.h>
+#include <ol/tilegrid.h>
 
 #include "gtest/gtest.h"
 
@@ -477,10 +478,19 @@ TEST_F(TileGridF, create_with_extent_and_origin)
 	//        tileSize: 10,
 	//        resolutions: [1]
 	//      });
+
+    ol::tilegrid::TileGrid::TileGridOptions options;
+    options.origin = ol::Coordinate({ 0, 0 });
+    options.extent = ol::Extent({ 10, 20, 30, 40 });
+    //options.sizes.assign({ {3, 3} });
+    options.tileSize = ol::Size({ 10, 10 });
+
+    ol::tilegrid::TileGrid tileGrid(ol::resolutions_t({ 1 }), options);
+
 	//      expect(tileGrid.getOrigin()).to.eql([0, 0]);
+    EXPECT_EQ(ol::Coordinate({ 0, 0 }), tileGrid.getOrigin());
 	//      expect(tileGrid.getExtent()).to.eql([10, 20, 30, 40]);
-	//    });
-	//  });
+    EXPECT_EQ(ol::Extent({ 10, 20, 30, 40 }), tileGrid.getExtent().value());
 }
 //
 
@@ -489,29 +499,46 @@ TEST_F(TileGridF, createForExtent)
 	//  describe('createForExtent', function() {
 	//    it('allows creation of tile grid from extent', function() {
 	//      var extent = ol.extent.createOrUpdate(-100, -100, 100, 100);
+
+    ol::Extent extent = ol::extent::createOrUpdate(-100, -100, 100, 100);
+
 	//      var grid = ol.tilegrid.createForExtent(extent);
+    ol::tilegrid::TileGrid grid = ol::tilegrid::createForExtent(extent);
+
 	//      expect(grid).to.be.a(ol.tilegrid.TileGrid);
 	//
 	//      var resolutions = grid.getResolutions();
+    ol::resolutions_t resolutions = grid.getResolutions();
 	//      expect(resolutions.length).to.be(ol.DEFAULT_MAX_ZOOM + 1);
+    EXPECT_EQ(ol::DEFAULT_MAX_ZOOM + 1, resolutions.size());
 	//      expect(grid.getOrigin()).to.eql([-100, 100]);
+    EXPECT_EQ(ol::Coordinate({ -100, 100 }), grid.getOrigin());
 	//    });
 	//  });
 }
 
 TEST_F(TileGridF, zoomFactor_)
 {
-	//  describe('#zoomFactor_', function() {
-	//    it('is set for a consistent zoom factor', function() {
-	//      var grid = new ol.tilegrid.TileGrid({
-	//        resolutions: [10, 5, 2.5, 1.25],
-	//        origin: origin,
-	//        tileSize: tileSize
-	//      });
-	//      expect(grid.zoomFactor_).to.be(2);
-	//    });
+    {
+        //  describe('#zoomFactor_', function() {
+        //    it('is set for a consistent zoom factor', function() {
+        //      var grid = new ol.tilegrid.TileGrid({
+        //        resolutions: [10, 5, 2.5, 1.25],
+        //        origin: origin,
+        //        tileSize: tileSize
+        //      });
+        ol::tilegrid::TileGrid::TileGridOptions options;
+        options.origin = origin;
+        //options.extent = ol::Extent({ 10, 20, 30, 40 });
+        //options.sizes.assign({ {3, 3} });
+        options.tileSize = ol::Size({ 10, 10 });
+        ol::tilegrid::TileGrid grid(ol::resolutions_t({ 10, 5, 2.5, 1.25 }), options);
 
-	//    it('is not set for an inconsistent zoom factor', function() {
+        //      expect(grid.zoomFactor_).to.be(2);
+        EXPECT_EQ(2, grid.zoomFactor_.value());
+    }
+    {
+    //    it('is not set for an inconsistent zoom factor', function() {
 	//      var grid = new ol.tilegrid.TileGrid({
 	//        resolutions: [10, 5, 3, 1.25],
 	//        origin: origin,
@@ -520,6 +547,17 @@ TEST_F(TileGridF, zoomFactor_)
 	//      expect(grid.zoomFactor_).to.be(undefined);
 	//    });
 	//  });
+
+        ol::tilegrid::TileGrid::TileGridOptions options;
+        options.origin = origin;
+        //options.extent = ol::Extent({ 10, 20, 30, 40 });
+        //options.sizes.assign({ {3, 3} });
+        options.tileSize = tileSize;
+        ol::tilegrid::TileGrid grid(ol::resolutions_t({ 10, 5, 3, 1.25 }), options);
+
+        //      expect(grid.zoomFactor_).to.be(2);
+        EXPECT_FALSE(grid.zoomFactor_.has_value());
+    }
 }
 
 TEST_F(TileGridF, createForProjection)
@@ -819,37 +857,60 @@ TEST_F(TileGridF, getTileCoordFromCoordAndZ)
 {
 	//  describe('#getTileCoordFromCoordAndZ()', function() {
 	//
-	//    describe('Y North, X East', function() {
-	//      it('returns the expected TileCoord', function() {
-	//        origin = [0, 0];
-	//        var tileGrid = new ol.tilegrid.TileGrid({
-	//          resolutions: resolutions,
-	//          origin: origin,
-	//          tileSize: tileSize
-	//        });
-	//        var tileCoord;
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 0], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(0);
-	//        expect(tileCoord[2]).to.eql(0);
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 100000], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(0);
-	//        expect(tileCoord[2]).to.eql(10);
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 0], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(10);
-	//        expect(tileCoord[2]).to.eql(0);
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 100000], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(10);
-	//        expect(tileCoord[2]).to.eql(10);
-	//      });
-	//    });
+    {
+        //    describe('Y North, X East', function() {
+        //      it('returns the expected TileCoord', function() {
+        //        origin = [0, 0];
+        //        var tileGrid = new ol.tilegrid.TileGrid({
+        //          resolutions: resolutions,
+        //          origin: origin,
+        //          tileSize: tileSize
+        //        });
+        ol::Coordinate origin({ 0, 0 });
+        ol::tilegrid::TileGrid::TileGridOptions options;
+        options.origin = origin;
+        options.tileSize = tileSize;
+        auto tileGrid = ol::tilegrid::TileGrid(resolutions, options);
+
+        //        var tileCoord;
+        ol::TileCoord tileCoord;
+        //
+        //        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 0], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({ 0, 0 }, 3);
+        //        expect(tileCoord[0]).to.eql(3);
+        //        expect(tileCoord[1]).to.eql(0);
+        //        expect(tileCoord[2]).to.eql(0);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(0, std::get<1>(tileCoord));
+        EXPECT_EQ(0, std::get<2>(tileCoord));
+        //
+        //        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 100000], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({ 0, 100000 }, 3);
+        //        expect(tileCoord[0]).to.eql(3);
+        //        expect(tileCoord[1]).to.eql(0);
+        //        expect(tileCoord[2]).to.eql(10);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(0, std::get<1>(tileCoord));
+        EXPECT_EQ(10, std::get<2>(tileCoord));
+        //
+        //        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 0], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({ 100000, 0 }, 3);
+        //        expect(tileCoord[0]).to.eql(3);
+        //        expect(tileCoord[1]).to.eql(10);
+        //        expect(tileCoord[2]).to.eql(0);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(10, std::get<1>(tileCoord));
+        EXPECT_EQ(0, std::get<2>(tileCoord));
+        //
+        //        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 100000], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({ 100000, 100000 }, 3);
+        //        expect(tileCoord[0]).to.eql(3);
+        //        expect(tileCoord[1]).to.eql(10);
+        //        expect(tileCoord[2]).to.eql(10);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(10, std::get<1>(tileCoord));
+        EXPECT_EQ(10, std::get<2>(tileCoord));
+    }
 	//
 	//    describe('Y South, X East', function() {
 	//      it('returns the expected TileCoord', function() {
@@ -859,30 +920,51 @@ TEST_F(TileGridF, getTileCoordFromCoordAndZ)
 	//          origin: origin,
 	//          tileSize: tileSize
 	//        });
-	//        var tileCoord;
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 0], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(0);
-	//        expect(tileCoord[2]).to.eql(-10);
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 100000], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(0);
-	//        expect(tileCoord[2]).to.eql(0);
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 0], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(10);
-	//        expect(tileCoord[2]).to.eql(-10);
-	//
-	//        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 100000], 3);
-	//        expect(tileCoord[0]).to.eql(3);
-	//        expect(tileCoord[1]).to.eql(10);
-	//        expect(tileCoord[2]).to.eql(0);
-	//      });
-	//    });
-	//  });
+
+    {
+	    ol::Coordinate origin({ 0, 100000 });
+	    ol::tilegrid::TileGrid::TileGridOptions options;
+	    options.origin = origin;
+	    options.tileSize = tileSize;
+	    auto tileGrid = ol::tilegrid::TileGrid(resolutions, options);
+	
+		ol::TileCoord tileCoord;
+		//
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({0, 0}, 3);
+		//        expect(tileCoord[0]).to.eql(3);
+		//        expect(tileCoord[1]).to.eql(0);
+		//        expect(tileCoord[2]).to.eql(-10);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(0, std::get<1>(tileCoord));
+        EXPECT_EQ(-10, std::get<2>(tileCoord));
+		//
+		//        tileCoord = tileGrid.getTileCoordForCoordAndZ([0, 100000], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({0, 100000}, 3);
+		//        expect(tileCoord[0]).to.eql(3);
+		//        expect(tileCoord[1]).to.eql(0);
+		//        expect(tileCoord[2]).to.eql(0);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(0, std::get<1>(tileCoord));
+        EXPECT_EQ(0, std::get<2>(tileCoord));
+		//
+		//        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 0], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({100000, 0}, 3);
+		//        expect(tileCoord[0]).to.eql(3);
+		//        expect(tileCoord[1]).to.eql(10);
+		//        expect(tileCoord[2]).to.eql(-10);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(10, std::get<1>(tileCoord));
+        EXPECT_EQ(-10, std::get<2>(tileCoord));
+		//
+		//        tileCoord = tileGrid.getTileCoordForCoordAndZ([100000, 100000], 3);
+        tileCoord = tileGrid.getTileCoordForCoordAndZ({100000, 100000}, 3);
+		//        expect(tileCoord[0]).to.eql(3);
+		//        expect(tileCoord[1]).to.eql(10);
+		//        expect(tileCoord[2]).to.eql(0);
+        EXPECT_EQ(3, std::get<0>(tileCoord));
+        EXPECT_EQ(10, std::get<1>(tileCoord));
+        EXPECT_EQ(0, std::get<2>(tileCoord));
+    }
 }
 
 TEST_F(TileGridF, getTileCoordForCoordAndResolution)

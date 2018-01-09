@@ -12,24 +12,31 @@
 #include <vector>
 #include <tuple>
 
+/**
+* File for all typedefs used by the compiler, and referenced by JSDoc.
+*
+* These look like vars (or var properties), but in fact are simply identifiers
+* for the Closure compiler. Originally they were included in the appropriate
+* namespace file, but with the move away from Closure namespaces and towards
+* self-contained standard modules are now all in this file.
+* Unlike the other type definitions - enums and constructor functions - they
+* are not code and so are not imported or exported. They are only referred to
+* in type-defining comments used by the Closure compiler, and so should not
+* appear in module code.
+*
+* They are now all in the `ol` namespace.
+*/
+
 namespace ol {
+
+typedef double number_t;
+
 const int DEFAULT_TILE_SIZE = 256;
 const int DEFAULT_MAX_ZOOM = 42;
-//
-///**
-// * File for all typedefs used by the compiler, and referenced by JSDoc.
-// *
-// * These look like vars (or var properties), but in fact are simply identifiers
-// * for the Closure compiler. Originally they were included in the appropriate
-// * namespace file, but with the move away from Closure namespaces and towards
-// * self-contained standard modules are now all in this file.
-// * Unlike the other type definitions - enums and constructor functions - they
-// * are not code and so are not imported or exported. They are only referred to
-// * in type-defining comments used by the Closure compiler, and so should not
-// * appear in module code.
-// *
-// * They are now all in the `ol` namespace.
-// */
+
+/// Resolutions. The array index of each resolution needs to match the zoom level. 
+typedef std::vector<number_t> resolutions_t;
+
 //
 //
 ///**
@@ -194,7 +201,7 @@ const int DEFAULT_MAX_ZOOM = 42;
 // * @typedef {Array.<number>}
 // */
 //ol.Coordinate;
-typedef std::vector<double> Coordinate;
+typedef std::vector<number_t> Coordinate;
 
 //
 //
@@ -284,7 +291,7 @@ typedef std::vector<double> Coordinate;
 // * @typedef {Array.<number>}
 // */
 //ol.Extent;
-typedef std::vector<int> Extent;
+typedef std::vector<number_t> Extent;
 
 //
 //

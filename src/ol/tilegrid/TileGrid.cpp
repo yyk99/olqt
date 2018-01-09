@@ -169,6 +169,16 @@ ol::optional<ol::Extent> ol::tilegrid::TileGrid::getExtent() const
     return extent_;
 }
 
+int ol::tilegrid::TileGrid::getMaxZoom() const
+{
+    return maxZoom;
+}
+
+int ol::tilegrid::TileGrid::getMinZoom() const
+{
+    return minZoom;
+}
+
 //ol.tilegrid.TileGrid.prototype.getOrigin = function(z) {
 ol::Coordinate const & ol::tilegrid::TileGrid::getOrigin(int z /*= 0*/) const
 {
@@ -178,17 +188,22 @@ ol::Coordinate const & ol::tilegrid::TileGrid::getOrigin(int z /*= 0*/) const
     return origins_[z];
 }
 
-int ol::tilegrid::TileGrid::getResolution(int z) const
+double ol::tilegrid::TileGrid::getResolution(int z) const
 {
 	return resolutions_[z];
+}
+
+ol::resolutions_t const & ol::tilegrid::TileGrid::getResolutions() const
+{
+    return resolutions_;
 }
 
 //ol.tilegrid.TileGrid.prototype.getTileRangeForExtentAndZ = function(extent, z, opt_tileRange) {
 ol::TileRange ol::tilegrid::TileGrid::getTileRangeForExtentAndZ(ol::Extent extent, int z)
 {
     ol::TileCoord tileCoord = getTileCoordForXYAndZ_(extent[0], extent[1], z, false);
-    int minX = std::get<1>(tileCoord); // [1];
-    int minY = std::get<2>(tileCoord); // [2];
+    number_t minX = std::get<1>(tileCoord); // [1];
+    number_t minY = std::get<2>(tileCoord); // [2];
     tileCoord = getTileCoordForXYAndZ_(extent[2], extent[3], z, true);
     return ol::TileRange::createOrUpdate(minX, std::get<1>(tileCoord), minY, std::get<2>(tileCoord));
 }
@@ -216,6 +231,11 @@ ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForXYAndZ_(int x, int y, int z
     }
 
     return ol::TileCoord(z, int(tileCoordX), int(tileCoordY));
+}
+
+ol::TileCoord ol::tilegrid::TileGrid::getTileCoordForCoordAndZ(ol::Coordinate const &coordinate, int z)
+{
+    return getTileCoordForXYAndZ_(coordinate[0], coordinate[1], z, false);
 }
 
 ol::Size const & ol::tilegrid::TileGrid::getTileSize(int z) const

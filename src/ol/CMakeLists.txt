@@ -43,6 +43,11 @@ set (TILEGRID_SRC
     tilegrid/TileGrid.h
 )
 
+set (EXTENT_SRC
+    extent/Corner.cpp
+    extent/Corner.h
+    )
+
 add_library(olqt SHARED
     Disposable.cpp
     Disposable.h
@@ -69,17 +74,21 @@ add_library(olqt SHARED
     optional.h
     size.cpp
     size.h
+    tilegrid.cpp
+    tilegrid.h
     typedefs.h
 
     ${EVENTS_SRC}
+    ${EXTENT_SRC}
     ${LAYER_SRC}
     ${SOURCE_SRC}
     ${STRUCTS_SRC}
     ${TILEGRID_SRC}
 )
 
-source_group("Source Files\\structs" FILES ${STRUCTS_SRC})
 source_group("Source Files\\events" FILES ${EVENTS_SRC})
+source_group("Source Files\\extent" FILES ${EXTENT_SRC})
+source_group("Source Files\\structs" FILES ${STRUCTS_SRC})
 source_group("Source Files\\layer" FILES ${LAYER_SRC})
 source_group("Source Files\\source" FILES ${SOURCE_SRC})
 source_group("Source Files\\tilegrid" FILES ${TILEGRID_SRC})

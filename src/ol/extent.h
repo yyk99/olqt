@@ -9,6 +9,7 @@
 
 #include <ol/exports.h>
 #include <ol/typedefs.h>
+#include <ol/extent/Corner.h>
 
 // 4.6.4
 
@@ -212,26 +213,16 @@ namespace extent {
 //};
 //
 //
-///**
-// * Create a new extent or update the provided extent.
-// * @param {number} minX Minimum X.
-// * @param {number} minY Minimum Y.
-// * @param {number} maxX Maximum X.
-// * @param {number} maxY Maximum Y.
-// * @param {ol.Extent=} opt_extent Destination extent.
-// * @return {ol.Extent} Extent.
-// */
-//ol.extent.createOrUpdate = function(minX, minY, maxX, maxY, opt_extent) {
-//  if (opt_extent) {
-//    opt_extent[0] = minX;
-//    opt_extent[1] = minY;
-//    opt_extent[2] = maxX;
-//    opt_extent[3] = maxY;
-//    return opt_extent;
-//  } else {
-//    return [minX, minY, maxX, maxY];
-//  }
-//};
+/**
+ * Create a new extent or update the provided extent.
+ * @param {number} minX Minimum X.
+ * @param {number} minY Minimum Y.
+ * @param {number} maxX Maximum X.
+ * @param {number} maxY Maximum Y.
+ * @param {ol.Extent=} opt_extent Destination extent.
+ * @return {ol.Extent} Extent.
+ */
+ol::Extent OLQT_EXPORT createOrUpdate(double minX, double minY, double maxX, double maxY);;
 //
 //
 ///**
@@ -454,30 +445,23 @@ namespace extent {
 //  }
 //  return area;
 //};
-//
-//
+
 ///**
 // * Get the bottom left coordinate of an extent.
 // * @param {ol.Extent} extent Extent.
 // * @return {ol.Coordinate} Bottom left coordinate.
 // * @api
 // */
-//ol.extent.getBottomLeft = function(extent) {
-//  return [extent[0], extent[1]];
-//};
-//
-//
-///**
-// * Get the bottom right coordinate of an extent.
-// * @param {ol.Extent} extent Extent.
-// * @return {ol.Coordinate} Bottom right coordinate.
-// * @api
-// */
-//ol.extent.getBottomRight = function(extent) {
-//  return [extent[2], extent[1]];
-//};
-//
-//
+ol::Coordinate getBottomLeft(ol::Extent const & extent);
+
+/**
+ * Get the bottom right coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Bottom right coordinate.
+ * @api
+ */
+ol::Coordinate getBottomRight(ol::Extent const & extent);
+
 ///**
 // * Get the center coordinate of an extent.
 // * @param {ol.Extent} extent Extent.
@@ -487,45 +471,24 @@ namespace extent {
 //ol.extent.getCenter = function(extent) {
 //  return [(extent[0] + extent[2]) / 2, (extent[1] + extent[3]) / 2];
 //};
-//
-//
-///**
-// * Get a corner coordinate of an extent.
-// * @param {ol.Extent} extent Extent.
-// * @param {ol.extent.Corner} corner Corner.
-// * @return {ol.Coordinate} Corner coordinate.
-// */
-//ol.extent.getCorner = function(extent, corner) {
-//  var coordinate;
-//  if (corner === ol.extent.Corner.BOTTOM_LEFT) {
-//    coordinate = ol.extent.getBottomLeft(extent);
-//  } else if (corner === ol.extent.Corner.BOTTOM_RIGHT) {
-//    coordinate = ol.extent.getBottomRight(extent);
-//  } else if (corner === ol.extent.Corner.TOP_LEFT) {
-//    coordinate = ol.extent.getTopLeft(extent);
-//  } else if (corner === ol.extent.Corner.TOP_RIGHT) {
-//    coordinate = ol.extent.getTopRight(extent);
-//  } else {
-//    ol.asserts.assert(false, 13); // Invalid corner
-//  }
-//  return /** @type {!ol.Coordinate} */ (coordinate);
-//};
-//
-//
+
+
+/**
+ * Get a corner coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.extent.Corner} corner Corner.
+ * @return {ol.Coordinate} Corner coordinate.
+ */
+ol::Coordinate OLQT_EXPORT getCorner(ol::Extent const &extent, ol::extent::Corner::enum_t corner);
+
+
 ///**
 // * @param {ol.Extent} extent1 Extent 1.
 // * @param {ol.Extent} extent2 Extent 2.
 // * @return {number} Enlarged area.
 // */
-//ol.extent.getEnlargedArea = function(extent1, extent2) {
-//  var minX = Math.min(extent1[0], extent2[0]);
-//  var minY = Math.min(extent1[1], extent2[1]);
-//  var maxX = Math.max(extent1[2], extent2[2]);
-//  var maxY = Math.max(extent1[3], extent2[3]);
-//  return (maxX - minX) * (maxY - minY);
-//};
-//
-//
+number_t OLQT_EXPORT getEnlargedArea (ol::Extent const &extent1, ol::Extent const &extent2);
+
 ///**
 // * @param {ol.Coordinate} center Center.
 // * @param {number} resolution Resolution.
@@ -558,19 +521,16 @@ namespace extent {
 //      Math.max(x0, x1, x2, x3), Math.max(y0, y1, y2, y3),
 //      opt_extent);
 //};
-//
-//
-///**
-// * Get the height of an extent.
-// * @param {ol.Extent} extent Extent.
-// * @return {number} Height.
-// * @api
-// */
-//ol.extent.getHeight = function(extent) {
-//  return extent[3] - extent[1];
-//};
-//
-//
+
+/**
+ * Get the height of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {number} Height.
+ * @api
+ */
+double OLQT_EXPORT getHeight (ol::Extent const &extent);;
+
+
 ///**
 // * @param {ol.Extent} extent1 Extent 1.
 // * @param {ol.Extent} extent2 Extent 2.
@@ -580,8 +540,7 @@ namespace extent {
 //  var intersection = ol.extent.getIntersection(extent1, extent2);
 //  return ol.extent.getArea(intersection);
 //};
-//
-//
+
 ///**
 // * Get the intersection of two extents.
 // * @param {ol.Extent} extent1 Extent 1.
@@ -616,8 +575,8 @@ namespace extent {
 //  }
 //  return intersection;
 //};
-//
-//
+
+
 ///**
 // * @param {ol.Extent} extent Extent.
 // * @return {number} Margin.
@@ -625,8 +584,8 @@ namespace extent {
 //ol.extent.getMargin = function(extent) {
 //  return ol.extent.getWidth(extent) + ol.extent.getHeight(extent);
 //};
-//
-//
+
+
 ///**
 // * Get the size (width, height) of an extent.
 // * @param {ol.Extent} extent The extent.
@@ -636,8 +595,7 @@ namespace extent {
 //ol.extent.getSize = function(extent) {
 //  return [extent[2] - extent[0], extent[3] - extent[1]];
 //};
-//
-//
+
 /**
  * Get the top left coordinate of an extent.
  * @param {ol.Extent} extent Extent.
@@ -645,28 +603,22 @@ namespace extent {
  * @api
  */
 ol::Coordinate OLQT_EXPORT getTopLeft(ol::Extent const &ex);;
-//
-//
-///**
-// * Get the top right coordinate of an extent.
-// * @param {ol.Extent} extent Extent.
-// * @return {ol.Coordinate} Top right coordinate.
-// * @api
-// */
-//ol.extent.getTopRight = function(extent) {
-//  return [extent[2], extent[3]];
-//};
-//
-//
-///**
-// * Get the width of an extent.
-// * @param {ol.Extent} extent Extent.
-// * @return {number} Width.
-// * @api
-// */
-//ol.extent.getWidth = function(extent) {
-//  return extent[2] - extent[0];
-//};
+
+/**
+ * Get the top right coordinate of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {ol.Coordinate} Top right coordinate.
+ * @api
+ */
+ol::Coordinate getTopRight(ol::Extent const & extent);
+
+/**
+ * Get the width of an extent.
+ * @param {ol.Extent} extent Extent.
+ * @return {number} Width.
+ * @api
+ */
+ol::number_t OLQT_EXPORT getWidth(ol::Extent const &extent);;
 //
 //
 ///**
