@@ -8,8 +8,10 @@
 #define OL_PROJ_H
 
 #include <ol/proj/Projection.h>
+#include <ol/proj/EPSG3857.h>
 
 #include <string>
+#include <vector>
 
 namespace ol {
 namespace proj {
@@ -131,16 +133,16 @@ namespace proj {
 // * @param {Array.<ol.proj.Projection>} projections Projections.
 // * @api
 // */
-//ol.proj.addEquivalentProjections = function(projections) {
-//  ol.proj.addProjections(projections);
-//  projections.forEach(function(source) {
-//    projections.forEach(function(destination) {
-//      if (source !== destination) {
-//        ol.proj.transforms.add(source, destination, ol.proj.cloneTransform);
-//      }
-//    });
-//  });
-//};
+void OLQT_EXPORT addEquivalentProjections(std::vector<ol::proj::Projection> const &projections) {
+	//  ol.proj.addProjections(projections);
+	//  projections.forEach(function(source) {
+	//    projections.forEach(function(destination) {
+	//      if (source !== destination) {
+	//        ol.proj.transforms.add(source, destination, ol.proj.cloneTransform);
+	//      }
+	//    });
+	//  });
+}
 //
 //
 ///**
@@ -490,25 +492,26 @@ ol::proj::Projection get(std::string const &projectionLike);;
 //  return transformFn(point);
 //};
 //
-///**
-// * Add transforms to and from EPSG:4326 and EPSG:3857.  This function is called
-// * by when this module is executed and should only need to be called again after
-// * `ol.proj.clearAllProjections()` is called (e.g. in tests).
-// */
-//ol.proj.addCommon = function() {
-//  // Add transformations that don't alter coordinates to convert within set of
-//  // projections with equal meaning.
-//  ol.proj.addEquivalentProjections(ol.proj.EPSG3857.PROJECTIONS);
-//  ol.proj.addEquivalentProjections(ol.proj.EPSG4326.PROJECTIONS);
-//  // Add transformations to convert EPSG:4326 like coordinates to EPSG:3857 like
-//  // coordinates and back.
-//  ol.proj.addEquivalentTransforms(
-//      ol.proj.EPSG4326.PROJECTIONS,
-//      ol.proj.EPSG3857.PROJECTIONS,
-//      ol.proj.EPSG3857.fromEPSG4326,
-//      ol.proj.EPSG3857.toEPSG4326);
-//};
-//
+/**
+ * Add transforms to and from EPSG:4326 and EPSG:3857.  This function is called
+ * by when this module is executed and should only need to be called again after
+ * `ol.proj.clearAllProjections()` is called (e.g. in tests).
+ */
+void addCommon () {
+	throw std::runtime_error("not implemented");
+  //// Add transformations that don't alter coordinates to convert within set of
+  //// projections with equal meaning.
+  //ol::proj::addEquivalentProjections(ol::proj::EPSG3857::PROJECTIONS);
+  ////ol::proj::addEquivalentProjections(ol.proj.EPSG4326.PROJECTIONS);
+  //// Add transformations to convert EPSG:4326 like coordinates to EPSG:3857 like
+  //// coordinates and back.
+  //ol.proj.addEquivalentTransforms(
+  //    ol.proj.EPSG4326.PROJECTIONS,
+  //    ol.proj.EPSG3857.PROJECTIONS,
+  //    ol.proj.EPSG3857.fromEPSG4326,
+  //    ol.proj.EPSG3857.toEPSG4326);
+};
+
 //ol.proj.addCommon();
 
 }
