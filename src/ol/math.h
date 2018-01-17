@@ -9,8 +9,19 @@
 
 // Based on 4.6.4
 
-#include <stdexcpt.h>
+#include <ol/typedefs.h>
+#include <ol/exports.h>
+
+#include <stdexcept>
 #include <algorithm>
+#include <limits>
+#include <cmath>
+
+#define Infinity std::numeric_limits<ol::number_t>::infinity()
+
+#ifndef PI
+#   define PI 3.1415926535897932384626433
+#endif
 
 namespace ol {
 namespace math {
@@ -37,43 +48,33 @@ T clamp(T _v, T _min, T _max) {
     return std::min(std::max(_v, _min), _max);
 }
 
-//
-//
-///**
-// * Return the hyperbolic cosine of a given number. The method will use the
-// * native `Math.cosh` function if it is available, otherwise the hyperbolic
-// * cosine will be calculated via the reference implementation of the Mozilla
-// * developer network.
-// *
-// * @param {number} x X.
-// * @return {number} Hyperbolic cosine of x.
-// */
-//export var cosh  = (function() {
-//  // Wrapped in a iife, to save the overhead of checking for the native
-//  // implementation on every invocation.
-//  var cosh;
-//  if ('cosh' in Math) {
-//    // The environment supports the native Math.cosh function, use it…
-//    cosh = Math.cosh;
-//  } else {
-//    // … else, use the reference implementation of MDN:
-//    cosh = function(x) {
-//      var y = Math.exp(x);
-//      return (y + 1 / y) / 2;
-//    };
-//  }
-//  return cosh;
-//}());
-//
-//
-///**
-// * @param {number} x X.
-// * @return {number} The smallest power of two greater than or equal to x.
-// */
-//export function roundUpToPowerOfTwo(x) {
-//  assert(0 < x, 29); // `x` must be greater than `0`
-//  return Math.pow(2, Math.ceil(Math.log(x) / Math.LN2));
-//}
+/**
+ * Return the hyperbolic cosine of a given number. The method will use the
+ * native `Math.cosh` function if it is available, otherwise the hyperbolic
+ * cosine will be calculated via the reference implementation of the Mozilla
+ * developer network.
+ *
+ * @param {number} x X.
+ * @return {number} Hyperbolic cosine of x.
+ */
+
+inline ol::number_t cosh(ol::number_t d)
+{
+	return std::cosh(d);
+}
+
+/**
+ * @param {number} x X.
+ * @return {number} The smallest power of two greater than or equal to x.
+ */
+inline ol::number_t roundUpToPowerOfTwo(ol::number_t x) 
+{
+	//assert(0 < x, 29); // `x` must be greater than `0`
+	if (x <= 0)
+		throw std::logic_error("x is not positive");
+	return std::pow(2, std::ceil(std::log(x) / 0.693147180559945309417232121458));
+}
+
 //
 //
 ///**
@@ -102,8 +103,7 @@ T clamp(T _v, T _min, T _max) {
 //  }
 //  return squaredDistance(x, y, x1, y1);
 //}
-//
-//
+
 ///**
 // * Returns the square of the distance between the points (x1, y1) and (x2, y2).
 // * @param {number} x1 X1.
@@ -117,108 +117,60 @@ T clamp(T _v, T _min, T _max) {
 //  var dy = y2 - y1;
 //  return dx * dx + dy * dy;
 //}
-//
-//
-///**
-// * Solves system of linear equations using Gaussian elimination method.
-// *
-// * @param {Array.<Array.<number>>} mat Augmented matrix (n x n + 1 column)
-// *                                     in row-major order.
-// * @return {Array.<number>} The resulting vector.
-// */
-//export function solveLinearSystem(mat) {
-//  var n = mat.length;
-//
-//  for (var i = 0; i < n; i++) {
-//    // Find max in the i-th column (ignoring i - 1 first rows)
-//    var maxRow = i;
-//    var maxEl = Math.abs(mat[i][i]);
-//    for (var r = i + 1; r < n; r++) {
-//      var absValue = Math.abs(mat[r][i]);
-//      if (absValue > maxEl) {
-//        maxEl = absValue;
-//        maxRow = r;
-//      }
-//    }
-//
-//    if (maxEl === 0) {
-//      return null; // matrix is singular
-//    }
-//
-//    // Swap max row with i-th (current) row
-//    var tmp = mat[maxRow];
-//    mat[maxRow] = mat[i];
-//    mat[i] = tmp;
-//
-//    // Subtract the i-th row to make all the remaining rows 0 in the i-th column
-//    for (var j = i + 1; j < n; j++) {
-//      var coef = -mat[j][i] / mat[i][i];
-//      for (var k = i; k < n + 1; k++) {
-//        if (i == k) {
-//          mat[j][k] = 0;
-//        } else {
-//          mat[j][k] += coef * mat[i][k];
-//        }
-//      }
-//    }
-//  }
-//
-//  // Solve Ax=b for upper triangular matrix A (mat)
-//  var x = new Array(n);
-//  for (var l = n - 1; l >= 0; l--) {
-//    x[l] = mat[l][n] / mat[l][l];
-//    for (var m = l - 1; m >= 0; m--) {
-//      mat[m][n] -= mat[m][l] * x[l];
-//    }
-//  }
-//  return x;
-//}
-//
-//
-///**
-// * Converts radians to to degrees.
-// *
-// * @param {number} angleInRadians Angle in radians.
-// * @return {number} Angle in degrees.
-// */
-//export function toDegrees(angleInRadians) {
-//  return angleInRadians * 180 / Math.PI;
-//}
-//
-//
-///**
-// * Converts degrees to radians.
-// *
-// * @param {number} angleInDegrees Angle in degrees.
-// * @return {number} Angle in radians.
-// */
-//export function toRadians(angleInDegrees) {
-//  return angleInDegrees * Math.PI / 180;
-//}
-//
-///**
-// * Returns the modulo of a / b, depending on the sign of b.
-// *
-// * @param {number} a Dividend.
-// * @param {number} b Divisor.
-// * @return {number} Modulo.
-// */
-//export function modulo(a, b) {
-//  var r = a % b;
-//  return r * b < 0 ? r + b : r;
-//}
-//
-///**
-// * Calculates the linearly interpolated value of x between a and b.
-// *
-// * @param {number} a Number
-// * @param {number} b Number
-// * @param {number} x Value to be interpolated.
-// * @return {number} Interpolated value.
-// */
-//export function lerp(a, b, x) {
-//  return a + x * (b - a);
-//}
+
+
+/**
+ * Solves system of linear equations using Gaussian elimination method.
+ *
+ * @param {Array.<Array.<number>>} mat Augmented matrix (n x n + 1 column)
+ *                                     in row-major order.
+ * @return {Array.<number>} The resulting vector.
+ */
+std::vector<number_t> OLQT_EXPORT solveLinearSystem(std::vector<std::vector<number_t> > &mat);
+
+/**
+ * Converts radians to to degrees.
+ *
+ * @param {number} angleInRadians Angle in radians.
+ * @return {number} Angle in degrees.
+ */
+inline ol::number_t toDegrees(ol::number_t angleInRadians) {
+  return angleInRadians * 180 / PI;
+}
+
+/**
+ * Converts degrees to radians.
+ *
+ * @param {number} angleInDegrees Angle in degrees.
+ * @return {number} Angle in radians.
+ */
+inline ol::number_t toRadians(ol::number_t angleInDegrees) {
+	return angleInDegrees * PI / 180;
+}
+
+/**
+ * Returns the modulo of a / b, depending on the sign of b.
+ *
+ * @param {number} a Dividend.
+ * @param {number} b Divisor.
+ * @return {number} Modulo.
+ */
+inline int modulo(int a, int b) {
+	int r = a % b;
+	return r * b < 0 ? r + b : r;
+}
+
+/**
+ * Calculates the linearly interpolated value of x between a and b.
+ *
+ * @param {number} a Number
+ * @param {number} b Number
+ * @param {number} x Value to be interpolated.
+ * @return {number} Interpolated value.
+ */
+inline ol::number_t lerp(ol::number_t a, ol::number_t b, ol::number_t x) {
+	return a + x * (b - a);
+}
 
 }
 }
