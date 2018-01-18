@@ -17,16 +17,26 @@ namespace array {
 //goog.provide('ol.array');
 //
 //
-///**
-// * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
-// * https://github.com/darkskyapp/binary-search
-// *
-// * @param {Array.<*>} haystack Items to search through.
-// * @param {*} needle The item to look for.
-// * @param {Function=} opt_comparator Comparator function.
-// * @return {number} The index of the item if found, -1 if not.
-// */
-//ol.array.binarySearch = function(haystack, needle, opt_comparator) {
+/**
+ * Performs a binary search on the provided sorted list and returns the index of the item if found. If it can't be found it'll return -1.
+ * https://github.com/darkskyapp/binary-search
+ *
+ * @param {Array.<*>} haystack Items to search through.
+ * @param {*} needle The item to look for.
+ * @param {Function=} opt_comparator Comparator function.
+ * @return {number} The index of the item if found, -1 if not.
+ */
+template <typename T, typename V>
+int binarySearch(std::vector<T> const &haystack, V const &needle) 
+{
+	auto pos = std::lower_bound(haystack.begin(), haystack.end(), needle);
+	if (pos != haystack.end() && *pos == needle)
+		return int(pos - haystack.begin());
+	return -(int(pos - haystack.begin()) + 1);
+}
+
+
+//
 //  var mid, cmp;
 //  var comparator = opt_comparator || ol.array.numberSafeCompareFunction;
 //  var low = 0;
