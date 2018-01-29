@@ -8,6 +8,7 @@
 #define OL_ARRAY_H
 
 #include <ol/exports.h>
+#include <ol/optional.h>
 
 #include <vector>
 
@@ -35,6 +36,29 @@ int binarySearch(std::vector<T> const &haystack, V const &needle)
 	return -(int(pos - haystack.begin()) + 1);
 }
 
+//template <class T, class Compare>
+//struct make_less 
+//{
+//	Compare const &_comparator;
+//	less(Compare const &c) : _comparator(c) {}
+//
+//	bool operator()(T const &a, T const &b)
+//	{
+//		return _comparator(a, b) < 0;
+//	}
+//};
+
+// Compare returns number_t
+template <typename T, typename V, class Compare>
+int binarySearch(std::vector<T> const &haystack, V const &needle, Compare cmp)
+{
+	auto lt_function = [cmp](T const &a, T const &b) { return cmp(a, b) < 0; };
+
+	auto pos = std::lower_bound(haystack.begin(), haystack.end(), needle, lt_function);
+	if (pos != haystack.end() && *pos == needle)
+		return int(pos - haystack.begin());
+	return -(int(pos - haystack.begin()) + 1);
+}
 
 //
 //  var mid, cmp;
@@ -178,6 +202,17 @@ int linearFindNearest (std::vector<T> const &arr, T target, int direction)
 //  }
 //  return found;
 //};
+
+template<typename T>
+bool remove(std::vector<T> &arr, T const &obj)
+{
+	auto pos = std::find(arr.begin(), arr.end(), obj);
+	if (pos == arr.end())
+		return false;
+	arr.erase(pos);
+	return true;
+}
+
 //
 //
 ///**
@@ -198,7 +233,18 @@ int linearFindNearest (std::vector<T> const &arr, T target, int direction)
 //  }
 //  return null;
 //};
-//
+
+template<typename T, typename Func>
+ol::optional<T> find(std::vector<T> const &arr, Func func)
+{
+	for (int i = 0; i != arr.size(); ++i) {
+		if (func(arr[i]))
+			return ol::optional<T>(arr[i]);
+	}
+	return ol::optional<T>();
+}
+
+
 //
 ///**
 // * @param {Array|Uint8ClampedArray} arr1 The first array to compare.
@@ -217,8 +263,14 @@ int linearFindNearest (std::vector<T> const &arr, T target, int direction)
 //  }
 //  return true;
 //};
-//
-//
+
+template <typename T, typename V>
+int equals(std::vector<T> const &arr1, std::vector<V> const &arr2)
+{
+	return arr1 == arr2;
+}
+
+
 ///**
 // * @param {Array.<*>} arr The array to sort (modifies original).
 // * @param {Function} compareFnc Comparison function.
@@ -237,6 +289,15 @@ int linearFindNearest (std::vector<T> const &arr, T target, int direction)
 //    arr[i] = tmp[i].value;
 //  }
 //};
+
+template <typename T, class Compare>
+void stableSort(std::vector<T> &arr, Compare cmp)
+{
+	auto lt_function = [cmp](T const &a, T const &b) { return cmp(a, b) < 0; };
+
+	std::stable_sort(arr.begin(), arr.end(), lt_function);
+}
+
 //
 //
 ///**
@@ -252,6 +313,17 @@ int linearFindNearest (std::vector<T> const &arr, T target, int direction)
 //  });
 //  return found ? index : -1;
 //};
+
+template<typename T, typename Func>
+int findIndex(std::vector<T> const &arr, Func func)
+{
+	for (int i = 0; i != arr.size(); ++i) {
+		if (func(arr[i]))
+			return int(i);
+	}
+	return -1;
+}
+
 //
 //
 ///**
