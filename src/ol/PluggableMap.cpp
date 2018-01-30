@@ -21,6 +21,11 @@ void ol::PluggableMap::setTarget(std::string const &targetName)
 {
 }
 
+void ol::PluggableMap::setTarget(QWidget *widget)
+{
+
+}
+
 void ol::PluggableMap::addLayer(ol::layer::Layer *layers)
 {
 

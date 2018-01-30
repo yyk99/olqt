@@ -41,7 +41,7 @@
 </html>
 */
 
-MainWindow::MainWindow(QWindow *parent /*= 0*/)
+MainWindow::MainWindow(QWidget *parent /*= 0*/)
 {
     m_map = ol::MapPtr(new ol::Map);
     
@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWindow *parent /*= 0*/)
     auto view = new ol::View();
     m_map->setView(view);
 
-    m_map->setTarget("this window");
+    m_map->setTarget(this);
 }
 
 MainWindow::~MainWindow()

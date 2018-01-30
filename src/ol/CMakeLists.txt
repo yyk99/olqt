@@ -2,6 +2,8 @@
 #
 #
 
+find_package(Qt5Widgets REQUIRED)
+
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set (STRUCTS_SRC
@@ -115,6 +117,8 @@ source_group("Source Files\\source" FILES ${SOURCE_SRC})
 source_group("Source Files\\tilegrid" FILES ${TILEGRID_SRC})
 
 target_include_directories(olqt SYSTEM INTERFACE "${olqt_SOURCE_DIR}/src")
+
+qt5_use_modules(olqt Widgets)
 
 set_target_properties(olqt PROPERTIES FOLDER "ol")
 
