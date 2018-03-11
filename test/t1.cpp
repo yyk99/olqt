@@ -43,7 +43,7 @@ TEST(ol_optional, t1)
 }
 
 
-#include <ol/math.h>
+#include <ol/ol_math.h>
 
 //import _ol_math_ from '../../../src/ol/math.js';
 //

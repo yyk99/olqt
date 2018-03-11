@@ -16,7 +16,7 @@ class ImageElement; // FORWARD
 
 class OLQT_EXPORT TileLoadFunctionType {
 public:
-	virtual void operator () (ol::Tile *tile, std::string const &url) = 0;
+    virtual void operator () (ol::Tile *tile, std::string const &url) = 0;
 };
 
 //goog.provide('ol.ImageTile');
@@ -45,50 +45,10 @@ public:
 
 	};
 
-	ImageTile(ol::TileCoord tileCoord, ol::TileState::enum_t state, std::string src, 
-		std::string crossOrigin, ol::TileLoadFunctionType &tileLoadFunction, Options *opt_options = 0)
-		: ol::Tile(tileCoord, state), src_(src)
-	{
-		//ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options) {
-		//
-		//  ol.Tile.call(this, tileCoord, state, opt_options);
-		//
-		//  /**
-		//   * @private
-		//   * @type {?string}
-		//   */
-		//  this.crossOrigin_ = crossOrigin;
-		//
-		//  /**
-		//   * Image URI
-		//   *
-		//   * @private
-		//   * @type {string}
-		//   */
-		//  this.src_ = src;
-		//
-		//  /**
-		//   * @private
-		//   * @type {Image|HTMLCanvasElement}
-		//   */
-		//  this.image_ = new Image();
-		//  if (crossOrigin !== null) {
-		//    this.image_.crossOrigin = crossOrigin;
-		//  }
-		//
-		//  /**
-		//   * @private
-		//   * @type {Array.<ol.EventsKey>}
-		//   */
-		//  this.imageListenerKeys_ = null;
-		//
-		//  /**
-		//   * @private
-		//   * @type {ol.TileLoadFunctionType}
-		//   */
-		//  this.tileLoadFunction_ = tileLoadFunction;
-		//
-	};
+	ImageTile(ol::TileCoord const &tileCoord, ol::TileState::enum_t state, std::string const &src, 
+		std::string const &crossOrigin, ol::TileLoadFunctionType &tileLoadFunction, Options *opt_options = 0);
+
+        virtual ~ImageTile();
 
 	/**
 	 * @inheritDoc

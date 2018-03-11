@@ -3,7 +3,7 @@
 //
 
 #include "TileGrid.h"
-#include <ol/math.h>
+#include <ol/ol_math.h>
 #include <ol/array.h>
 
 #include <algorithm>

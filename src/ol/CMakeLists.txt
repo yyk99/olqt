@@ -4,6 +4,10 @@
 
 find_package(Qt5Widgets REQUIRED)
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set (STRUCTS_SRC
@@ -14,6 +18,7 @@ set (STRUCTS_SRC
 set (EVENTS_SRC
     events/EventTarget.cpp
     events/EventTarget.h
+    events/eventtype.h
 )
 
 set (LAYER_SRC
@@ -26,6 +31,8 @@ set (LAYER_SRC
 )
 
 set (SOURCE_SRC
+    source/Image.cpp
+    source/Image.h
     source/OSM.cpp
     source/OSM.h
     source/Source.cpp
@@ -84,12 +91,27 @@ add_library(olqt SHARED
     View.h
     array.cpp
     array.h
+    attribution.cpp
+    attribution.h
+    collection.cpp
+    collection.h
+    control.cpp
+    control.h
+    events.cpp
+    events.h
     exports.h
     extent.cpp
     extent.h
     forward_definitions.h
+    image.cpp
+    image.h
+    imagebase.cpp
+    imagebase.h
+    imagestate.h
     math.cpp
-    math.h
+    observable.cpp
+    observable.h
+    ol_math.h
     optional.h
     proj.cpp
     proj.h

@@ -14,14 +14,19 @@
 #include "ol/forward_definitions.h"
 #include "PluggableMap.h"
 
-class QWindow;
+#include "ol/optional.h"
+
 
 namespace ol {
 
+struct MapOptions {
+
+};
 
 class OLQT_EXPORT Map : public PluggableMap {
 public:
     Map();
+	Map(MapOptions const &options);
     virtual ~Map();
 };
 }

@@ -4,7 +4,7 @@
  *
  */
 
-#include "math.h"
+#include "ol_math.h"
 
 
 std::vector<ol::number_t> ol::math::solveLinearSystem(std::vector<std::vector<number_t> > &mat)

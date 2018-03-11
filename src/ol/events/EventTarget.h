@@ -12,11 +12,11 @@ namespace events {
 
 class OLQT_EXPORT EventTarget : public ol::Disposable {
 public:
-	EventTarget();
-	virtual ~EventTarget();
+    EventTarget();
+    virtual ~EventTarget();
 
 protected:
-	virtual void disposeInternal() override;
+    virtual void disposeInternal() override;
 };
 
 }

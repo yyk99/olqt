@@ -2,7 +2,7 @@
 //
 //
 
-#include "Disposable.h"
+#include <ol/Disposable.h>
 
 ol::Disposable::Disposable() : disposed_(false)
 {
@@ -10,14 +10,14 @@ ol::Disposable::Disposable() : disposed_(false)
 
 ol::Disposable::~Disposable()
 {
-	dispose();
+    dispose();
 }
 
 void ol::Disposable::dispose()
 {
-	if (!disposed_) {
-		disposed_ = true;
+    if (!disposed_) {
+        disposed_ = true;
 
-		disposeInternal();
-	}
+        disposeInternal();
+    }
 }

@@ -14,6 +14,9 @@ namespace ol {
 class Map;
 typedef std::shared_ptr<Map> MapPtr;
 
+class Object;
+typedef std::shared_ptr<Object> ObjectPtr;
+
 class View;
 typedef std::shared_ptr<View> ViewPtr;
 

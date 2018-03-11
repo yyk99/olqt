@@ -5,22 +5,16 @@
 #ifndef OL_OBJECT_H
 #define OL_OBJECT_H
 
-#include "exports.h"
+#include <ol/observable.h>
 
 #pragma warning ( disable : 4251 )
 
 #include <string>
 #include <map>
 
+#include <QObject>
+
 namespace ol {
-
-typedef std::string property_val_t;
-
-class OLQT_EXPORT Observable {
-public:
-    virtual ~Observable() {}
-};
-
 
 class OLQT_EXPORT Object : public Observable {
 public:
