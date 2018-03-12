@@ -10,7 +10,10 @@
 namespace ol {
 struct ImageState {
     enum enum_t {
-        IDLE
+        IDLE = 0,
+        LOADING = 1,
+        LOADED = 2,
+        ERROR = 3
     };
 };
 }

@@ -8,8 +8,12 @@
 #define OL_IMAGE_H
 
 #include <ol/imagebase.h>
+#include <ol/events.h>
 
 namespace ol {
+
+class Image;
+typedef void ImageLoadFunctionType(Image *, std::string const &);
 
 //goog.provide('ol.Image');
 //
@@ -21,6 +25,12 @@ namespace ol {
 //goog.require('ol.extent');
 //
 //
+
+class HTMLImageElement {
+public:
+    HTMLImageElement() {}
+};
+
 ///**
 // * @constructor
 // * @extends {ol.ImageBase}
@@ -33,11 +43,30 @@ namespace ol {
 // */
 
 class Image : public ol::ImageBase {
-    Image (ol::Extent extent, ol::number_t resolution, ol::number_t pixelRatio, std::string src, std::string crossOrigin, void *imageLoadFunction) 
+private:
+    std::string src_;
+    ol::Image *image_;
+    ol::ImageLoadFunctionType *imageLoadFunction_;
+   std::vector<ol::EventsKey> imageListenerKeys_;
+
+protected:
+    std::string crossOrigin;
+
+public:
+    Image()
+        : ol::ImageBase(ol::Extent(), ol::number_t(), ol::number_t(), ol::ImageState::IDLE)
+        , src_()
+        , image_()
+    {}
+
+    Image (ol::Extent extent, ol::number_t resolution, ol::number_t pixelRatio, std::string src, std::string xOrigin, ol::ImageLoadFunctionType *imageLoadFunction) 
+        //  ol.ImageBase.call(this, extent, resolution, pixelRatio, ol.ImageState.IDLE);
         : ol::ImageBase(extent, resolution, pixelRatio, ol::ImageState::IDLE)
+        , src_(src)
+        , image_(new Image())
+        , imageLoadFunction_(imageLoadFunction)
     {
     //
-    //  ol.ImageBase.call(this, extent, resolution, pixelRatio, ol.ImageState.IDLE);
     //
     //  /**
     //   * @private
@@ -64,7 +93,7 @@ class Image : public ol::ImageBase {
     //   * @protected
     //   * @type {ol.ImageState}
     //   */
-    //  this.state = ol.ImageState.IDLE;
+    state = ol::ImageState::IDLE;
     //
     //  /**
     //   * @private
@@ -74,84 +103,68 @@ class Image : public ol::ImageBase {
     //
     };
     //ol.inherits(ol.Image, ol.ImageBase);
-    //
-    //
-    ///**
-    // * @inheritDoc
-    // * @api
-    // */
-    //ol.Image.prototype.getImage = function() {
-    //  return this.image_;
-    //};
-    //
-    //
-    ///**
-    // * Tracks loading or read errors.
-    // *
-    // * @private
-    // */
-    //ol.Image.prototype.handleImageError_ = function() {
-    //  this.state = ol.ImageState.ERROR;
-    //  this.unlistenImage_();
-    //  this.changed();
-    //};
-    //
-    //
-    ///**
-    // * Tracks successful image load.
-    // *
-    // * @private
-    // */
-    //ol.Image.prototype.handleImageLoad_ = function() {
-    //  if (this.resolution === undefined) {
-    //    this.resolution = ol.extent.getHeight(this.extent) / this.image_.height;
-    //  }
-    //  this.state = ol.ImageState.LOADED;
-    //  this.unlistenImage_();
-    //  this.changed();
-    //};
-    //
-    //
-    ///**
-    // * Load the image or retry if loading previously failed.
-    // * Loading is taken care of by the tile queue, and calling this method is
-    // * only needed for preloading or for reloading in case of an error.
-    // * @override
-    // * @api
-    // */
-    //ol.Image.prototype.load = function() {
-    //  if (this.state == ol.ImageState.IDLE || this.state == ol.ImageState.ERROR) {
-    //    this.state = ol.ImageState.LOADING;
-    //    this.changed();
-    //    this.imageListenerKeys_ = [
-    //      ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,
-    //          this.handleImageError_, this),
-    //      ol.events.listenOnce(this.image_, ol.events.EventType.LOAD,
-    //          this.handleImageLoad_, this)
-    //    ];
-    //    this.imageLoadFunction_(this, this.src_);
-    //  }
-    //};
-    //
-    //
-    ///**
-    // * @param {HTMLCanvasElement|Image|HTMLVideoElement} image Image.
-    // */
-    //ol.Image.prototype.setImage = function(image) {
-    //  this.image_ = image;
-    //};
-    //
-    //
-    ///**
-    // * Discards event handlers which listen for load completion or errors.
-    // *
-    // * @private
-    // */
-    //ol.Image.prototype.unlistenImage_ = function() {
-    //  this.imageListenerKeys_.forEach(ol.events.unlistenByKey);
-    //  this.imageListenerKeys_ = null;
-    //};
-    //
+    
+    ~Image() {
+        dispose();
+    }
+    
+    /**
+     * @inheritDoc
+     * @api
+     */
+    virtual ol::Image *getImage() const override {
+        return image_;
+    };
+    
+    
+    /**
+     * Tracks loading or read errors.
+     *
+     * @private
+     */
+    static void handleImageError_(void *obj, void *);;
+
+
+    /**
+     * Tracks successful image load.
+     *
+     * @private
+     */
+    static void handleImageLoad_(void *obj, void *);
+
+
+    /**
+     * Load the image or retry if loading previously failed.
+     * Loading is taken care of by the tile queue, and calling this method is
+     * only needed for preloading or for reloading in case of an error.
+     * @override
+     * @api
+     */
+    virtual void load() override;
+    
+    
+    /**
+     * @param {HTMLCanvasElement|Image|HTMLVideoElement} image Image.
+     */
+    void setImage (Image *image) {
+        image_ = image;
+    };
+    
+    
+    /**
+     * Discards event handlers which listen for load completion or errors.
+     *
+     * @private
+     */
+    void unlistenImage_ () {
+        // TODO:
+        //this.imageListenerKeys_.forEach(ol.events.unlistenByKey);
+        //this.imageListenerKeys_ = null;
+    };
+
+protected:
+    virtual void disposeInternal() override;
+
 };
 }
 

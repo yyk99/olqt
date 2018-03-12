@@ -159,64 +159,33 @@ namespace events {
 // * @return {ol.EventsKey} Unique key for the listener.
 // */
 //ol.events.listen = function(target, type, listener, opt_this, opt_once) {
-ol::EventsKey listen(ol::events::EventTarget &target, ol::events::EventType::enum_t type, void(*listener)(void *, void *), void *opt_this = 0, bool once = false)
-{
-    //  var listenerMap = ol.events.getListenerMap_(target);
-    //  var listeners = listenerMap[type];
-    //  if (!listeners) {
-    //    listeners = listenerMap[type] = [];
-    //  }
-    //  var listenerObj = ol.events.findListener_(listeners, listener, opt_this,
-    //      false);
-    //  if (listenerObj) {
-    //    if (!opt_once) {
-    //      // Turn one-off listener into a permanent one.
-    //      listenerObj.callOnce = false;
-    //    }
-    //  } else {
-    //    listenerObj = /** @type {ol.EventsKey} */ ({
-    //      bindTo: opt_this,
-    //      callOnce: !!opt_once,
-    //      listener: listener,
-    //      target: target,
-    //      type: type
-    //    });
-    //    target.addEventListener(type, ol.events.bindListener_(listenerObj));
-    //    listeners.push(listenerObj);
-    //  }
-    //
-    //  return listenerObj;
+ol::EventsKey OLQT_EXPORT listen(ol::events::EventTarget &target, ol::events::EventType::enum_t type, void(*listener)(void *, void *), void *opt_this = 0, bool once = false);;
 
-    return ol::EventsKey();
-};
 
-//
-//
-///**
-// * Registers a one-off event listener on an event target. Inspired by
-// * {@link https://google.github.io/closure-library/api/source/closure/goog/events/events.js.src.html}
-// *
-// * This function efficiently binds a `listener` as self-unregistering listener
-// * to a `this` object, and returns a key for use with
-// * {@link ol.events.unlistenByKey} in case the listener needs to be unregistered
-// * before it is called.
-// *
-// * When {@link ol.events.listen} is called with the same arguments after this
-// * function, the self-unregistering listener will be turned into a permanent
-// * listener.
-// *
-// * @param {ol.EventTargetLike} target Event target.
-// * @param {string} type Event type.
-// * @param {ol.EventsListenerFunctionType} listener Listener.
-// * @param {Object=} opt_this Object referenced by the `this` keyword in the
-// *     listener. Default is the `target`.
-// * @return {ol.EventsKey} Key for unlistenByKey.
-// */
-//ol.events.listenOnce = function(target, type, listener, opt_this) {
-//  return ol.events.listen(target, type, listener, opt_this, true);
-//};
-//
-//
+
+/**
+ * Registers a one-off event listener on an event target. Inspired by
+ * {@link https://google.github.io/closure-library/api/source/closure/goog/events/events.js.src.html}
+ *
+ * This function efficiently binds a `listener` as self-unregistering listener
+ * to a `this` object, and returns a key for use with
+ * {@link ol.events.unlistenByKey} in case the listener needs to be unregistered
+ * before it is called.
+ *
+ * When {@link ol.events.listen} is called with the same arguments after this
+ * function, the self-unregistering listener will be turned into a permanent
+ * listener.
+ *
+ * @param {ol.EventTargetLike} target Event target.
+ * @param {string} type Event type.
+ * @param {ol.EventsListenerFunctionType} listener Listener.
+ * @param {Object=} opt_this Object referenced by the `this` keyword in the
+ *     listener. Default is the `target`.
+ * @return {ol.EventsKey} Key for unlistenByKey.
+ */
+ol::EventsKey OLQT_EXPORT listenOnce (ol::events::EventTarget &target, ol::events::EventType::enum_t type, void(*listener)(void *, void *), void *opt_this);;
+
+
 ///**
 // * Unregisters an event listener on an event target. Inspired by
 // * {@link https://google.github.io/closure-library/api/source/closure/goog/events/events.js.src.html}
