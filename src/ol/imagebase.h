@@ -20,6 +20,7 @@
 //
 
 namespace ol {
+class Image;
 
 /**
  * @constructor
@@ -32,12 +33,15 @@ namespace ol {
  */
 class ImageBase : public events::EventTarget {
 private:
-    ol::Extent extent_;
-    ol::number_t resolution_;
     ol::number_t pixelRatio_;
-    int state_;
+protected:
+    ol::Extent extent;
+    ol::number_t resolution;
+    ol::ImageState::enum_t state;
 public:
-    ImageBase(ol::Extent const &extent, ol::number_t resolution, ol::number_t pixelRatio, ol::ImageState::enum_t state) {
+    ImageBase(ol::Extent const &extent, ol::number_t resolution, ol::number_t pixelRatio, ol::ImageState::enum_t state) 
+        : extent(extent), resolution(resolution), pixelRatio_(pixelRatio), state(state)
+    {
         //
         //  ol.events.EventTarget.call(this);
         //
@@ -81,7 +85,7 @@ public:
     // * @return {ol.Extent} Extent.
     // */
     ol::Extent getExtent () const {
-        return extent_;
+        return extent;
     };
     
     
@@ -90,9 +94,7 @@ public:
      * @return {HTMLCanvasElement|Image|HTMLVideoElement} Image.
      */
 
-    virtual void * getImage() = 0;
-
-    
+    virtual ol::Image *getImage() const = 0;
     
     /**
      * @return {number} PixelRatio.
@@ -106,7 +108,7 @@ public:
      * @return {number} Resolution.
      */
     ol::number_t getResolution () {
-      return /** @type {number} */ resolution_;
+      return /** @type {number} */ resolution;
     };
     
     
@@ -114,7 +116,7 @@ public:
      * @return {ol.ImageState} State.
      */
     int getState () const {
-      return state_;
+      return state;
     };
     
     
