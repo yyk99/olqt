@@ -33,8 +33,20 @@ namespace ol {
 // */
 
 class Image : public ol::ImageBase {
+private:
+    std::string src_;
+    Image *image_;
+public:
+    Image() 
+        : ol::ImageBase(ol::Extent(), 0, 0, ol::ImageState::IDLE)
+        , src_()
+        , image_()
+    {}
+
     Image (ol::Extent extent, ol::number_t resolution, ol::number_t pixelRatio, std::string src, std::string crossOrigin, void *imageLoadFunction) 
         : ol::ImageBase(extent, resolution, pixelRatio, ol::ImageState::IDLE)
+        , src_(src)
+        , image_(new Image())
     {
     //
     //  ol.ImageBase.call(this, extent, resolution, pixelRatio, ol.ImageState.IDLE);
@@ -152,6 +164,15 @@ class Image : public ol::ImageBase {
     //  this.imageListenerKeys_ = null;
     //};
     //
+
+    virtual void * getImage() override;
+
+
+    virtual void load() override;
+
+protected:
+    virtual void disposeInternal() override;
+
 };
 }
 

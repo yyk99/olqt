@@ -6,7 +6,7 @@
 
 
 ol::ImageTile::ImageTile(ol::TileCoord const &tileCoord, ol::TileState::enum_t state, std::string const &src, std::string const &crossOrigin, ol::TileLoadFunctionType &tileLoadFunction, Options *opt_options /*= 0*/) 
-    : ol::Tile(tileCoord, state), src_(src)
+    : ol::Tile(tileCoord, state), src_(src), image_(new ol::Image())
 {
     //ol.ImageTile = function(tileCoord, state, src, crossOrigin, tileLoadFunction, opt_options) {
     //

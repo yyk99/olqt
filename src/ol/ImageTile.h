@@ -6,10 +6,16 @@
 #define OL_IMAGETILE_H
 
 #include <ol/Tile.h>
+#include <ol/image.h>
 
 namespace ol {
 
-class ImageElement; // FORWARD
+class ImageElement {
+public:
+    virtual std::string src() const {
+        return std::string();
+    }
+};
 
 //ol.TileLoadFunctionType() src / ol / typedefs.js, line 711
 //A function that takes an ol.Tile for the tile and a{ string } for the url as arguments.
@@ -30,165 +36,163 @@ public:
 //
 //
 class OLQT_EXPORT ImageTile : public ol::Tile {
-	/**
-	 * @constructor
-	 * @extends {ol.Tile}
-	 * @param {ol.TileCoord} tileCoord Tile coordinate.
-	 * @param {ol.TileState} state State.
-	 * @param {string} src Image source URI.
-	 * @param {?string} crossOrigin Cross origin.
-	 * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
-	 * @param {olx.TileOptions=} opt_options Tile options.
-	 */
+    /**
+     * @constructor
+     * @extends {ol.Tile}
+     * @param {ol.TileCoord} tileCoord Tile coordinate.
+     * @param {ol.TileState} state State.
+     * @param {string} src Image source URI.
+     * @param {?string} crossOrigin Cross origin.
+     * @param {ol.TileLoadFunctionType} tileLoadFunction Tile load function.
+     * @param {olx.TileOptions=} opt_options Tile options.
+     */
 public:
-	struct Options {
+    struct Options {
 
-	};
+    };
 
-	ImageTile(ol::TileCoord const &tileCoord, ol::TileState::enum_t state, std::string const &src, 
-		std::string const &crossOrigin, ol::TileLoadFunctionType &tileLoadFunction, Options *opt_options = 0);
+    ImageTile(ol::TileCoord const &tileCoord, ol::TileState::enum_t state, std::string const &src,
+        std::string const &crossOrigin, ol::TileLoadFunctionType &tileLoadFunction, Options *opt_options = 0);
 
-        virtual ~ImageTile();
+    virtual ~ImageTile();
 
-	/**
-	 * @inheritDoc
-	 */
-	virtual void disposeInternal() override 
-	{
-		//ol.ImageTile.prototype.disposeInternal = function() {
-		//  if (this.state == ol.TileState.LOADING) {
-		//    this.unlistenImage_();
-		//    this.image_ = ol.ImageTile.getBlankImage();
-		//  }
-		//  if (this.interimTile) {
-		//    this.interimTile.dispose();
-		//  }
-		//  this.state = ol.TileState.ABORT;
-		//  this.changed();
-		//  ol.Tile.prototype.disposeInternal.call(this);
-		//};
-	}
-
-
-	/**
-	 * Get the HTML image element for this tile (may be a Canvas, Image, or Video).
-	 * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
-	 * @api
-	 */
-	virtual ol::ImageElement *getImage() {
-		//ol.ImageTile.prototype.getImage = function() {
-		//  return this.image_;
-		//};
-		return 0; // TODO: implement
-	}
+    /**
+     * @inheritDoc
+     */
+    virtual void disposeInternal() override
+    {
+        //ol.ImageTile.prototype.disposeInternal = function() {
+        //  if (this.state == ol.TileState.LOADING) {
+        //    this.unlistenImage_();
+        //    this.image_ = ol.ImageTile.getBlankImage();
+        //  }
+        //  if (this.interimTile) {
+        //    this.interimTile.dispose();
+        //  }
+        //  this.state = ol.TileState.ABORT;
+        //  this.changed();
+        //  ol.Tile.prototype.disposeInternal.call(this);
+        //};
+    }
 
 
-	/**
-	 * @inheritDoc
-	 */
-	virtual std::string getKey() override
-	{
-		//ol.ImageTile.prototype.getKey = function() {
-		//  return this.src_;
-		//};
-		return src_;
-	}
+    /**
+     * Get the HTML image element for this tile (may be a Canvas, Image, or Video).
+     * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
+     * @api
+     */
+    virtual ol::ImageElement *getImage() {
+        return image_;
+    }
 
 
-	/**
-	 * Tracks loading or read errors.
-	 *
-	 * @private
-	 */
+    /**
+     * @inheritDoc
+     */
+    virtual std::string getKey() override
+    {
+        //ol.ImageTile.prototype.getKey = function() {
+        //  return this.src_;
+        //};
+        return src_;
+    }
+
+
+    /**
+     * Tracks loading or read errors.
+     *
+     * @private
+     */
 private:
-	void handleImageError_() {
-		//ol.ImageTile.prototype.handleImageError_ = function() {
-		//  this.state = ol.TileState.ERROR;
-		//  this.unlistenImage_();
-		//  this.image_ = ol.ImageTile.getBlankImage();
-		//  this.changed();
-		//};
-	}
+    void handleImageError_() {
+        //ol.ImageTile.prototype.handleImageError_ = function() {
+        //  this.state = ol.TileState.ERROR;
+        //  this.unlistenImage_();
+        //  this.image_ = ol.ImageTile.getBlankImage();
+        //  this.changed();
+        //};
+    }
 
 
-	/**
-	 * Tracks successful image load.
-	 *
-	 * @private
-	 */
-	void handleImageLoad_()
-	{
-		//ol.ImageTile.prototype.handleImageLoad_ = function() {
-		//  if (this.image_.naturalWidth && this.image_.naturalHeight) {
-		//    this.state = ol.TileState.LOADED;
-		//  } else {
-		//    this.state = ol.TileState.EMPTY;
-		//  }
-		//  this.unlistenImage_();
-		//  this.changed();
-		//};
-	}
+    /**
+     * Tracks successful image load.
+     *
+     * @private
+     */
+    void handleImageLoad_()
+    {
+        //ol.ImageTile.prototype.handleImageLoad_ = function() {
+        //  if (this.image_.naturalWidth && this.image_.naturalHeight) {
+        //    this.state = ol.TileState.LOADED;
+        //  } else {
+        //    this.state = ol.TileState.EMPTY;
+        //  }
+        //  this.unlistenImage_();
+        //  this.changed();
+        //};
+    }
 public:
-	
-	/**
-	 * @inheritDoc
-	 * @api
-	 */
-	void load() override
-	{
-		//ol.ImageTile.prototype.load = function() {
-		//  if (this.state == ol.TileState.ERROR) {
-		//    this.state = ol.TileState.IDLE;
-		//    this.image_ = new Image();
-		//    if (this.crossOrigin_ !== null) {
-		//      this.image_.crossOrigin = this.crossOrigin_;
-		//    }
-		//  }
-		//  if (this.state == ol.TileState.IDLE) {
-		//    this.state = ol.TileState.LOADING;
-		//    this.changed();
-		//    this.imageListenerKeys_ = [
-		//      ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,
-		//          this.handleImageError_, this),
-		//      ol.events.listenOnce(this.image_, ol.events.EventType.LOAD,
-		//          this.handleImageLoad_, this)
-		//    ];
-		//    this.tileLoadFunction_(this, this.src_);
-		//  }
-		//};
-	}
+
+    /**
+     * @inheritDoc
+     * @api
+     */
+    void load() override
+    {
+        //ol.ImageTile.prototype.load = function() {
+        //  if (this.state == ol.TileState.ERROR) {
+        //    this.state = ol.TileState.IDLE;
+        //    this.image_ = new Image();
+        //    if (this.crossOrigin_ !== null) {
+        //      this.image_.crossOrigin = this.crossOrigin_;
+        //    }
+        //  }
+        //  if (this.state == ol.TileState.IDLE) {
+        //    this.state = ol.TileState.LOADING;
+        //    this.changed();
+        //    this.imageListenerKeys_ = [
+        //      ol.events.listenOnce(this.image_, ol.events.EventType.ERROR,
+        //          this.handleImageError_, this),
+        //      ol.events.listenOnce(this.image_, ol.events.EventType.LOAD,
+        //          this.handleImageLoad_, this)
+        //    ];
+        //    this.tileLoadFunction_(this, this.src_);
+        //  }
+        //};
+    }
 
 
-	/**
-	 * Discards event handlers which listen for load completion or errors.
-	 *
-	 * @private
-	 */
+    /**
+     * Discards event handlers which listen for load completion or errors.
+     *
+     * @private
+     */
 private:
-	void unlistenImage_()
-	{
-		//ol.ImageTile.prototype.unlistenImage_ = function() {
-		//  this.imageListenerKeys_.forEach(ol.events.unlistenByKey);
-		//  this.imageListenerKeys_ = null;
-		//};
-	}
+    void unlistenImage_()
+    {
+        //ol.ImageTile.prototype.unlistenImage_ = function() {
+        //  this.imageListenerKeys_.forEach(ol.events.unlistenByKey);
+        //  this.imageListenerKeys_ = null;
+        //};
+    }
 
-	/**
-	 * Get a 1-pixel blank image.
-	 * @return {HTMLCanvasElement} Blank image.
-	 */
-	virtual ol::ImageElement *getBlankImage() const
-	{
-		//ol.ImageTile.getBlankImage = function() {
-		//  var ctx = ol.dom.createCanvasContext2D(1, 1);
-		//  ctx.fillStyle = 'rgba(0,0,0,0)';
-		//  ctx.fillRect(0, 0, 1, 1);
-		//  return ctx.canvas;
-		//};
-		return 0; // TODO: Implement
-	}
+    /**
+     * Get a 1-pixel blank image.
+     * @return {HTMLCanvasElement} Blank image.
+     */
+    virtual ol::ImageElement *getBlankImage() const
+    {
+        //ol.ImageTile.getBlankImage = function() {
+        //  var ctx = ol.dom.createCanvasContext2D(1, 1);
+        //  ctx.fillStyle = 'rgba(0,0,0,0)';
+        //  ctx.fillRect(0, 0, 1, 1);
+        //  return ctx.canvas;
+        //};
+        return 0; // TODO: Implement
+    }
 private:
-	std::string src_;
+    std::string src_;
+    ol::Image *image_;
 };
 
 }

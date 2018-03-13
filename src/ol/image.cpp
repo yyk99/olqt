@@ -7,4 +7,17 @@
 #include <ol/image.h>
 
 
+void * ol::Image::getImage()
+{
+    return 0;
+}
 
+void ol::Image::load()
+{
+   
+}
+
+void ol::Image::disposeInternal()
+{
+    
+}

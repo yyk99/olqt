@@ -15,8 +15,6 @@
 
 #include "gtest/gtest.h"
 
-
-
 //goog.require('ol.ImageTile');
 //goog.require('ol.TileState');
 //goog.require('ol.events');
@@ -42,7 +40,7 @@ TEST(ol_ImageTile, hash_load)
 {
     //
     //        it('can load idle tile', function(done) {
-    if (0) {
+    {
         ol::TileCoord tileCoord = { 0, 0, 0 };
         //            var state = ol.TileState.IDLE;
         auto state = ol::TileState::IDLE;
@@ -136,21 +134,25 @@ TEST(ol_ImageTile, hash_load)
 //    describe('dispose', function() {
 TEST(ol_ImageTile, dispose)
 {
-    //
-    //        it('sets image src to a blank image data uri', function() {
-    //            var tileCoord = [0, 0, 0];
-    //            var state = ol.TileState.IDLE;
-    //            var src = 'spec/ol/data/osm-0-0-0.png';
-    //            var tileLoadFunction = ol.source.Image.defaultImageLoadFunction;
-    //            var tile = new ol.ImageTile(tileCoord, state, src, null, tileLoadFunction);
-    //            tile.load();
-    //            expect(tile.getState()).to.be(ol.TileState.LOADING);
-    //            tile.dispose();
-    //            expect(tile.getState()).to.be(ol.TileState.ABORT);
-    //            expect(tile.getImage().src).to.be(ol.ImageTile.blankImageUrl);
-    //        });
-    //
-    //    });
+
+    //it('sets image src to a blank image data uri', function() {
+    {
+        ol::TileCoord tileCoord = { 0, 0, 0 };
+        auto state = ol::TileState::IDLE;
+        std::string src = "spec/ol/data/osm-0-0-0.png";
+        auto tileLoadFunction = ol::source::Image::defaultImageLoadFunction;
+        auto tile = ol::ImageTile(tileCoord, state, src, std::string(), defaultLoadFunction());
+        tile.load();
+
+        EXPECT_EQ(ol::TileState::LOADING, tile.getState());
+
+        tile.dispose();
+
+        EXPECT_EQ(ol::TileState::ABORT, tile.getState());
+        EXPECT_EQ(std::string()/*ol::ImageTile::blankImageUrl*/, tile.getImage().src());
+    });
+
+});
 }
 //
 //});
