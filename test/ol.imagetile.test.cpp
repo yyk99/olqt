@@ -149,10 +149,8 @@ TEST(ol_ImageTile, dispose)
         tile.dispose();
 
         EXPECT_EQ(ol::TileState::ABORT, tile.getState());
-        EXPECT_EQ(std::string()/*ol::ImageTile::blankImageUrl*/, tile.getImage().src());
-    });
-
-});
+        EXPECT_EQ(std::string()/*ol::ImageTile::blankImageUrl*/, tile.getImage()->src());
+    }
 }
 //
 //});

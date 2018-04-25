@@ -192,7 +192,7 @@ private:
     }
 private:
     std::string src_;
-    ol::Image *image_;
+    ol::ImageElement *image_;
 };
 
 }
